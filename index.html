@@ -315,20 +315,27 @@ let scheduleData = { reservations:[], hotels:[] };
 // "2026-06-28" 형식으로 Date 변환
 function fmt(d){ return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
 
-// "2026-06-28" → "20260628" (DB 저장용)
-function toCompact(s){ return String(s).replace(/-/g,''); }
-
-// "20260628" 또는 "2026-06-28" → 항상 "2026-06-28"로 정규화
-function normDate(s){
-  s = String(s||'');
-  if(s.includes('-')) return s;
-  if(s.length===8) return s.slice(0,4)+'-'+s.slice(4,6)+'-'+s.slice(6,8);
+// "2026-06-28" → "26.06.28" (DB 저장용)
+function toStorageFmt(s){ 
+  // s는 "2026-06-28" 형식
+  const parts = s.split('-');
+  if(parts.length===3) return parts[0].slice(2)+'.'+parts[1]+'.'+parts[2];
   return s;
 }
 
-// 날짜 표시용: "20260628" 또는 "2026-06-28" → "6/28(일)"
+// 서버에서 온 "2026-06-28" (toDisplayDate 변환된 값) → "2026-06-28" 그대로 사용
+// renderWeek 비교용: dateStr("2026-06-28")와 r.date("2026-06-28") 직접 비교
+function normDate(s){
+  s = String(s||'');
+  // "26.06.28" 형식이면 "2026-06-28"로 변환
+  if(/^\d{2}\.\d{2}\.\d{2}$/.test(s)) return '20'+s.slice(0,2)+'-'+s.slice(3,5)+'-'+s.slice(6,8);
+  return s;
+}
+
+// 날짜 표시용: "2026-06-28" → "6/28(일)"
 function fmtDisp(s){
-  const d = new Date(normDate(s));
+  const norm = normDate(s);
+  const d = new Date(norm);
   if(isNaN(d)) return s;
   return `${d.getMonth()+1}/${d.getDate()}(${['일','월','화','수','목','금','토'][d.getDay()]})`;
 }
@@ -410,16 +417,13 @@ function renderWeek(){
 
   week.forEach((dateStr,i)=>{
     // dateStr은 "2026-06-28" 형식
-    // DB에서 오는 r.date는 "20260628" 또는 "2026-06-28" 둘 다 가능
-    // 모두 compact로 변환해서 비교
-    const compact = toCompact(dateStr); // "20260628"
-
+    // 서버에서 r.date는 toDisplayDate 변환된 "2026-06-28" 형식으로 옴
     const kindy=(scheduleData.reservations||[]).filter(r=>{
-      return toCompact(String(r.date||''))===compact && r.status==='확정';
+      return normDate(String(r.date||''))===dateStr && r.status==='확정';
     });
     const hotel=(scheduleData.hotels||[]).filter(r=>{
-      const ci=toCompact(String(r.checkIn||'')), co=toCompact(String(r.checkOut||''));
-      return ci<=compact && compact<=co && r.status==='확정';
+      const ci=normDate(String(r.checkIn||'')), co=normDate(String(r.checkOut||''));
+      return ci<=dateStr && dateStr<=co && r.status==='확정';
     });
     const res=[...kindy,...hotel.map(r=>({...r,type:'hotel'}))];
     const d=new Date(dateStr), isToday=dateStr===todayStr, dow=d.getDay();
@@ -472,7 +476,7 @@ async function submitKindy(){
   if(selectedTransport==='픽업+자차'&&!document.getElementById('t3return').value){ showAlert('reserveAlert','하원 시간을 선택해주세요.','error'); return; }
   if(Number(currentUser.tickets||0)<=0){ showAlert('reserveAlert','횟수권 잔여 횟수가 없어요.','error'); return; }
 
-  const dateFmt = toCompact(date); // "20260628" 형식 — 구글시트 날짜 자동변환 방지
+  const dateFmt = toStorageFmt(date); // "26.06.28" 형식 — 구글시트 날짜 자동변환 방지
 
   let timeVal='';
   if(selectedTransport==='전체자차') timeVal='등원:'+document.getElementById('t1arrive').value+' / 하원:'+document.getElementById('t1return').value;
@@ -504,7 +508,7 @@ async function submitHotel(){
   const fullAddr=(currentUser.addr||'')+(currentUser.addrDetail?' '+currentUser.addrDetail:'');
   showAlert('hotelAlert','예약 요청 중...','success');
   try {
-    const r=await apiPost({action:'hotelReserve',checkIn:toCompact(ci),checkOut:toCompact(co),dog:currentUser.name,guardian:currentUser.guardian,phone:currentUser.phone,transport:selectedHotelTransport,addr:needAddr?fullAddr:'',note:document.getElementById('hotelNote').value});
+    const r=await apiPost({action:'hotelReserve',checkIn:toStorageFmt(ci),checkOut:toStorageFmt(co),dog:currentUser.name,guardian:currentUser.guardian,phone:currentUser.phone,transport:selectedHotelTransport,addr:needAddr?fullAddr:'',note:document.getElementById('hotelNote').value});
     if(r.success){
       showAlert('hotelAlert',r.message,'success');
       selectedHotelTransport='';
@@ -523,7 +527,7 @@ async function loadMyReservations(){
     const kindy=(r.reservations||[]).map(x=>({...x,type:'kindy'}));
     const hotel=(r.hotels||[]).map(x=>({...x,type:'hotel'}));
     const all=[...kindy,...hotel].sort((a,b)=>{
-      const da=toCompact(String(a.date||a.checkIn||'')), db=toCompact(String(b.date||b.checkIn||''));
+      const da=normDate(String(a.date||a.checkIn||'')), db=normDate(String(b.date||b.checkIn||''));
       return da.localeCompare(db);
     });
     const list=document.getElementById('myReserveList');
