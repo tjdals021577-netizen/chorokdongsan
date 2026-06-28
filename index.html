@@ -127,11 +127,11 @@ textarea.form-input { resize:vertical; min-height:72px; font-family:inherit; lin
     <div id="loginForm">
       <div class="form-group">
         <label class="form-label">강아지 이름</label>
-        <input class="form-input" id="loginDog" placeholder="예: 콩이" />
+        <input class="form-input" id="loginDog" placeholder="예: 콩이"/>
       </div>
       <div class="form-group">
         <label class="form-label">비밀번호</label>
-        <input class="form-input" id="loginPw" type="password" placeholder="비밀번호 입력" onkeydown="if(event.key==='Enter')login()" />
+        <input class="form-input" id="loginPw" type="password" placeholder="비밀번호 입력" onkeydown="if(event.key==='Enter')login()"/>
       </div>
       <div id="loginAlert"></div>
       <button class="btn-primary" onclick="login()">로그인</button>
@@ -157,10 +157,7 @@ textarea.form-input { resize:vertical; min-height:72px; font-family:inherit; lin
 <!-- 메인 앱 -->
 <div class="main-screen" id="mainScreen">
   <div class="header">
-    <div>
-      <h1>🐾 초록동산</h1>
-      <p id="headerSub">안녕하세요</p>
-    </div>
+    <div><h1>🐾 초록동산</h1><p id="headerSub">안녕하세요</p></div>
     <button class="logout-btn" onclick="logout()">로그아웃</button>
   </div>
   <div class="phone-bar">
@@ -208,8 +205,6 @@ textarea.form-input { resize:vertical; min-height:72px; font-family:inherit; lin
             <label class="form-label">날짜 선택</label>
             <input class="form-input" id="reserveDate" type="date"/>
           </div>
-
-          <!-- 이동 방법 (4가지) -->
           <div class="transport-section">
             <span class="transport-label">이동 방법</span>
             <div class="transport-main">
@@ -219,7 +214,7 @@ textarea.form-input { resize:vertical; min-height:72px; font-family:inherit; lin
               <button class="transport-btn" onclick="pickTransport('픽업+드랍',this)">🔄 픽업+드랍</button>
             </div>
 
-            <!-- 1번: 전체 자차 등원 → 등원시간 + 하원시간 -->
+            <!-- 1번: 전체 자차 → 등원+하원 시간 -->
             <div id="tg1" style="display:none">
               <div class="form-group" style="margin-top:10px;margin-bottom:8px">
                 <label class="form-label">🚶 등원 예정 시간</label>
@@ -244,7 +239,7 @@ textarea.form-input { resize:vertical; min-height:72px; font-family:inherit; lin
               </div>
             </div>
 
-            <!-- 2번: 자차등원 + 드랍 → 등원시간 + 주소 -->
+            <!-- 2번: 자차+드랍 → 등원시간+주소 -->
             <div id="tg2" style="display:none">
               <div class="form-group" style="margin-top:10px;margin-bottom:0">
                 <label class="form-label">🚶 등원 예정 시간</label>
@@ -256,14 +251,11 @@ textarea.form-input { resize:vertical; min-height:72px; font-family:inherit; lin
                   <option>15:00</option><option>15:30</option><option>16:00</option>
                 </select>
               </div>
-              <div class="address-box" style="margin-top:10px">
-                <strong>📍 드랍 주소</strong>
-                <span id="addr2"></span>
-              </div>
+              <div class="address-box" style="margin-top:10px"><strong>📍 드랍 주소</strong><span id="addr2"></span></div>
               <p style="font-size:11px;color:#999;margin-top:5px;">주소 변경은 내 정보 탭에서 가능해요</p>
             </div>
 
-            <!-- 3번: 픽업 + 자차드랍 → 하원시간 + 주소 -->
+            <!-- 3번: 픽업+자차 → 하원시간+주소 -->
             <div id="tg3" style="display:none">
               <div class="form-group" style="margin-top:10px;margin-bottom:0">
                 <label class="form-label">🏠 하원 예정 시간</label>
@@ -276,19 +268,13 @@ textarea.form-input { resize:vertical; min-height:72px; font-family:inherit; lin
                   <option>17:00</option><option>17:30</option><option>18:00</option><option>18:30</option>
                 </select>
               </div>
-              <div class="address-box" style="margin-top:10px">
-                <strong>📍 픽업 주소</strong>
-                <span id="addr3"></span>
-              </div>
+              <div class="address-box" style="margin-top:10px"><strong>📍 픽업 주소</strong><span id="addr3"></span></div>
               <p style="font-size:11px;color:#999;margin-top:5px;">주소 변경은 내 정보 탭에서 가능해요</p>
             </div>
 
-            <!-- 4번: 픽업+드랍 → 시간 없음, 주소만 -->
+            <!-- 4번: 픽업+드랍 → 주소만 -->
             <div id="tg4" style="display:none">
-              <div class="address-box" style="margin-top:10px">
-                <strong>📍 픽업/드랍 주소</strong>
-                <span id="addr4"></span>
-              </div>
+              <div class="address-box" style="margin-top:10px"><strong>📍 픽업/드랍 주소</strong><span id="addr4"></span></div>
               <p style="font-size:11px;color:#999;margin-top:5px;">주소 변경은 내 정보 탭에서 가능해요</p>
             </div>
           </div>
@@ -296,15 +282,11 @@ textarea.form-input { resize:vertical; min-height:72px; font-family:inherit; lin
           <div class="form-group">
             <label class="form-label">잔여 횟수권</label>
             <div class="ticket-box">
-              <div>
-                <div class="ticket-num" id="ticketNum">-</div>
-                <div class="ticket-sub">잔여 횟수 · 예약 시 1회 차감</div>
-              </div>
+              <div><div class="ticket-num" id="ticketNum">-</div><div class="ticket-sub">잔여 횟수 · 예약 시 1회 차감</div></div>
               <div style="font-size:22px;">🎟</div>
             </div>
             <div class="ticket-warn" id="ticketWarn" style="display:none;"></div>
           </div>
-
           <div class="form-group">
             <label class="form-label">요청사항 (선택)</label>
             <textarea class="form-input" id="kindyNote" placeholder="특이사항, 컨디션, 식이 정보 등 자유롭게 적어주세요"></textarea>
@@ -331,10 +313,7 @@ textarea.form-input { resize:vertical; min-height:72px; font-family:inherit; lin
               <button class="transport-btn" onclick="pickHotelTransport('픽업+드랍',this)">🔄 픽업+드랍</button>
             </div>
             <div id="hotelAddrDisplay" style="display:none">
-              <div class="address-box" style="margin-top:8px">
-                <strong>📍 픽업/드랍 주소</strong>
-                <span id="hotelAddrText"></span>
-              </div>
+              <div class="address-box" style="margin-top:8px"><strong>📍 픽업/드랍 주소</strong><span id="hotelAddrText"></span></div>
             </div>
           </div>
           <div class="form-group">
@@ -351,7 +330,6 @@ textarea.form-input { resize:vertical; min-height:72px; font-family:inherit; lin
           <p style="font-size:11px;color:#888;margin-top:8px;text-align:center;">예약 요청 후 카카오채널로 재연락 주시면 확정돼요</p>
         </div>
       </div>
-
       <div class="card" style="text-align:center;padding:14px 16px;">
         <p style="font-size:12px;color:#888;margin-bottom:6px;">예약이 어려우시면 전화로 문의해주세요</p>
         <a href="tel:010-2646-8906" style="font-size:20px;font-weight:800;color:#d32f2f;text-decoration:none;">📞 010-2646-8906</a>
@@ -360,14 +338,8 @@ textarea.form-input { resize:vertical; min-height:72px; font-family:inherit; lin
 
     <!-- 내 정보 -->
     <div class="section" id="mypageSection">
-      <div class="card">
-        <div class="card-title">🐶 내 정보</div>
-        <div id="myInfoBox"></div>
-      </div>
-      <div class="card">
-        <div class="card-title">📋 내 예약 내역</div>
-        <div id="myReserveList"></div>
-      </div>
+      <div class="card"><div class="card-title">🐶 내 정보</div><div id="myInfoBox"></div></div>
+      <div class="card"><div class="card-title">📋 내 예약 내역</div><div id="myReserveList"></div></div>
       <div class="card" style="text-align:center;padding:14px;">
         <p style="font-size:12px;color:#888;margin-bottom:6px;">문의사항이 있으시면</p>
         <a href="tel:010-2646-8906" style="font-size:18px;font-weight:800;color:#d32f2f;text-decoration:none;">📞 010-2646-8906</a>
@@ -389,39 +361,13 @@ textarea.form-input { resize:vertical; min-height:72px; font-family:inherit; lin
 </div>
 
 <script>
+// ── DB: localStorage만 사용, 더미 데이터 없음
 function loadDB() {
-  const week = getWeekDates(0);
-  const def = {
-    users: {
-      '콩이': { pw:'1234', name:'콩이', guardian:'김보호자', phone:'010-1234-5678', breed:'말티즈', tickets:8, addr:'제주시 연동 123-4', addrDetail:'101호' },
-      '두부': { pw:'1234', name:'두부', guardian:'이보호자', phone:'010-2345-6789', breed:'포메라니안', tickets:3, addr:'제주시 노형동 456', addrDetail:'' },
-      '초코': { pw:'1234', name:'초코', guardian:'박보호자', phone:'010-3456-7890', breed:'푸들', tickets:0, addr:'제주시 도두동 789', addrDetail:'' },
-      '망고': { pw:'1234', name:'망고', guardian:'최보호자', phone:'010-4567-8901', breed:'비숑프리제', tickets:12, addr:'서귀포시 중문동 321', addrDetail:'' },
-      '루루': { pw:'1234', name:'루루', guardian:'정보호자', phone:'010-5678-9012', breed:'시츄', tickets:2, addr:'제주시 아라동 654', addrDetail:'' },
-      '하루': { pw:'1234', name:'하루', guardian:'강보호자', phone:'010-6789-0123', breed:'골든리트리버', tickets:5, addr:'제주시 이도동 987', addrDetail:'' },
-      '보리': { pw:'1234', name:'보리', guardian:'윤보호자', phone:'010-7890-1234', breed:'진돗개', tickets:1, addr:'서귀포시 대정읍 111', addrDetail:'' },
-    },
-    reservations: [
-      { id:'r1', type:'kindy', date:week[0], dog:'두부', breed:'포메라니안', guardian:'이보호자', phone:'010-2345-6789', transport:'전체자차', arrivalTime:'등원:09:00 / 하원:17:00', addr:'', note:'', status:'확정' },
-      { id:'r2', type:'kindy', date:week[0], dog:'망고', breed:'비숑프리제', guardian:'최보호자', phone:'010-4567-8901', transport:'픽업+드랍', arrivalTime:'', addr:'서귀포시 중문동 321', note:'', status:'확정' },
-      { id:'r3', type:'kindy', date:week[0], dog:'하루', breed:'골든리트리버', guardian:'강보호자', phone:'010-6789-0123', transport:'자차+드랍', arrivalTime:'등원:09:30', addr:'제주시 이도동 987', note:'', status:'확정' },
-      { id:'r4', type:'kindy', date:week[1], dog:'초코', breed:'푸들', guardian:'박보호자', phone:'010-3456-7890', transport:'픽업+자차', arrivalTime:'하원:16:00', addr:'제주시 도두동 789', note:'', status:'확정' },
-      { id:'r5', type:'kindy', date:week[2], dog:'콩이', breed:'말티즈', guardian:'김보호자', phone:'010-1234-5678', transport:'전체자차', arrivalTime:'등원:10:00 / 하원:18:00', addr:'', note:'', status:'확정' },
-      { id:'r6', type:'kindy', date:week[2], dog:'두부', breed:'포메라니안', guardian:'이보호자', phone:'010-2345-6789', transport:'픽업+드랍', arrivalTime:'', addr:'제주시 노형동 456', note:'', status:'확정' },
-      { id:'r7', type:'kindy', date:week[3], dog:'망고', breed:'비숑프리제', guardian:'최보호자', phone:'010-4567-8901', transport:'자차+드랍', arrivalTime:'등원:11:00', addr:'서귀포시 중문동 321', note:'', status:'확정' },
-      { id:'r8', type:'kindy', date:week[4], dog:'루루', breed:'시츄', guardian:'정보호자', phone:'010-5678-9012', transport:'전체자차', arrivalTime:'등원:09:00 / 하원:17:30', addr:'', note:'', status:'확정' },
-      { id:'r9', type:'kindy', date:week[4], dog:'하루', breed:'골든리트리버', guardian:'강보호자', phone:'010-6789-0123', transport:'픽업+자차', arrivalTime:'하원:17:00', addr:'제주시 이도동 987', note:'', status:'확정' },
-      { id:'r10', type:'hotel', checkIn:week[1], checkOut:week[3], dog:'보리', breed:'진돗개', guardian:'윤보호자', phone:'010-7890-1234', transport:'픽업+드랍', addr:'서귀포시 대정읍 111', note:'저녁 사료 따로 있어요', status:'확정' },
-      { id:'r11', type:'kindy', date:week[5], dog:'루루', breed:'시츄', guardian:'정보호자', phone:'010-5678-9012', transport:'전체자차', arrivalTime:'등원:10:00 / 하원:18:00', addr:'', note:'', status:'확정' },
-    ]
-  };
   const saved = localStorage.getItem('chorokDB');
   if (saved) {
-    const p = JSON.parse(saved);
-    if (p.users) Object.keys(p.users).forEach(k => { if(def.users[k]) def.users[k].tickets=p.users[k].tickets; else def.users[k]=p.users[k]; });
-    if (p.reservations && p.reservations.length > 0) def.reservations = p.reservations;
+    try { return JSON.parse(saved); } catch(e) {}
   }
-  return def;
+  return { users: {}, reservations: [] };
 }
 function saveDB() { localStorage.setItem('chorokDB', JSON.stringify(db)); }
 let db = loadDB();
@@ -458,6 +404,7 @@ function signup() {
 
 function login() {
   const dog=document.getElementById('loginDog').value.trim(), pw=document.getElementById('loginPw').value.trim();
+  db = loadDB();
   const u=db.users[dog];
   if(!u||u.pw!==pw){showAlert('loginAlert','강아지 이름 또는 비밀번호가 틀렸어요.','error');return;}
   currentUser={...u};
@@ -475,7 +422,7 @@ function login() {
   document.getElementById('hotelCheckIn').min=today; document.getElementById('hotelCheckOut').min=today;
 }
 
-function logout(){
+function logout() {
   currentUser=null;
   document.getElementById('mainScreen').style.display='none';
   document.getElementById('loginScreen').style.display='flex';
@@ -538,28 +485,21 @@ function submitKindy(){
   const date=document.getElementById('reserveDate').value;
   if(!date){showAlert('reserveAlert','날짜를 선택해주세요.','error');return;}
   if(!selectedTransport){showAlert('reserveAlert','이동 방법을 선택해주세요.','error');return;}
-
-  if(selectedTransport==='전체자차'){
-    if(!document.getElementById('t1arrive').value||!document.getElementById('t1return').value){
-      showAlert('reserveAlert','등원 시간과 하원 시간을 모두 선택해주세요.','error');return;}
-  }
+  if(selectedTransport==='전체자차'&&(!document.getElementById('t1arrive').value||!document.getElementById('t1return').value)){
+    showAlert('reserveAlert','등원 시간과 하원 시간을 모두 선택해주세요.','error');return;}
   if(selectedTransport==='자차+드랍'&&!document.getElementById('t2arrive').value){
     showAlert('reserveAlert','등원 예정 시간을 선택해주세요.','error');return;}
   if(selectedTransport==='픽업+자차'&&!document.getElementById('t3return').value){
     showAlert('reserveAlert','하원 예정 시간을 선택해주세요.','error');return;}
-
   if(currentUser.tickets<=0){showAlert('reserveAlert','횟수권 잔여 횟수가 없어요.','error');return;}
   if(db.reservations.find(r=>r.type==='kindy'&&r.date===date&&r.dog===currentUser.name&&r.status==='확정')){
     showAlert('reserveAlert','해당 날짜에 이미 예약이 있어요.','error');return;}
-
   const fullAddr=currentUser.addr+(currentUser.addrDetail?' '+currentUser.addrDetail:'');
   const needAddr=selectedTransport==='자차+드랍'||selectedTransport==='픽업+자차'||selectedTransport==='픽업+드랍';
-
   let timeVal='';
   if(selectedTransport==='전체자차') timeVal='등원:'+document.getElementById('t1arrive').value+' / 하원:'+document.getElementById('t1return').value;
   else if(selectedTransport==='자차+드랍') timeVal='등원:'+document.getElementById('t2arrive').value;
   else if(selectedTransport==='픽업+자차') timeVal='하원:'+document.getElementById('t3return').value;
-
   db.reservations.push({
     id:'r_'+Date.now(), type:'kindy', date,
     dog:currentUser.name, breed:currentUser.breed,
@@ -574,10 +514,7 @@ function submitKindy(){
   showAlert('reserveAlert',`✅ 예약 완료! 잔여 횟수: ${currentUser.tickets}회`,'success');
   selectedTransport='';
   document.querySelectorAll('#kindyForm .transport-btn').forEach(b=>b.classList.remove('sel'));
-  document.getElementById('tg1').style.display='none';
-  document.getElementById('tg2').style.display='none';
-  document.getElementById('tg3').style.display='none';
-  document.getElementById('tg4').style.display='none';
+  ['tg1','tg2','tg3','tg4'].forEach(id=>document.getElementById(id).style.display='none');
   document.getElementById('kindyNote').value='';
 }
 
@@ -608,10 +545,10 @@ function submitHotel(){
 function renderMypage(){
   const u=currentUser;
   document.getElementById('myInfoBox').innerHTML=`
-    <div class="info-row"><span class="info-label">강아지</span><span class="info-value">${u.name} (${u.breed})</span></div>
+    <div class="info-row"><span class="info-label">강아지</span><span class="info-value">${u.name} (${u.breed||''})</span></div>
     <div class="info-row"><span class="info-label">보호자</span><span class="info-value">${u.guardian}</span></div>
     <div class="info-row"><span class="info-label">연락처</span><span class="info-value">${u.phone}</span></div>
-    <div class="info-row"><span class="info-label">주소</span><span class="info-value" style="font-size:12px">${u.addr}${u.addrDetail?' '+u.addrDetail:''}</span></div>
+    <div class="info-row"><span class="info-label">주소</span><span class="info-value" style="font-size:12px">${u.addr||''}${u.addrDetail?' '+u.addrDetail:''}</span></div>
     <div class="info-row"><span class="info-label">잔여 횟수권</span><span class="info-value" style="color:#2e7d32;font-size:17px;">${u.tickets}회</span></div>
   `;
   const myRes=db.reservations.filter(r=>r.dog===u.name&&r.status!=='취소').sort((a,b)=>(a.date||a.checkIn).localeCompare(b.date||b.checkIn));
@@ -662,7 +599,7 @@ function transportBadge(t){
   if(t==='자차+드랍') return '<span class="badge badge-green">자차+드랍</span>';
   if(t==='픽업+자차') return '<span class="badge badge-blue">픽업+자차</span>';
   if(t==='픽업+드랍') return '<span class="badge badge-blue">픽업+드랍</span>';
-  return '<span class="badge badge-gray">'+t+'</span>';
+  return `<span class="badge badge-gray">${t}</span>`;
 }
 function showAlert(id,msg,type){
   const el=document.getElementById(id);
