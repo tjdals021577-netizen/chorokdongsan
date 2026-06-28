@@ -309,20 +309,39 @@ async function apiPost(body) {
 }
 
 let currentUser=null, selectedTransport='', selectedHotelTransport='';
-let cancelTargetId='', cancelType='', weekOffset=0;
+let cancelTargetId='', cancelType='', cancelDateStr='', weekOffset=0;
 let scheduleData = { reservations:[], hotels:[] };
+
+// "2026-06-28" 형식으로 Date 변환
+function fmt(d){ return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
+
+// "2026-06-28" → "20260628" (DB 저장용)
+function toCompact(s){ return String(s).replace(/-/g,''); }
+
+// "20260628" 또는 "2026-06-28" → 항상 "2026-06-28"로 정규화
+function normDate(s){
+  s = String(s||'');
+  if(s.includes('-')) return s;
+  if(s.length===8) return s.slice(0,4)+'-'+s.slice(4,6)+'-'+s.slice(6,8);
+  return s;
+}
+
+// 날짜 표시용: "20260628" 또는 "2026-06-28" → "6/28(일)"
+function fmtDisp(s){
+  const d = new Date(normDate(s));
+  if(isNaN(d)) return s;
+  return `${d.getMonth()+1}/${d.getDate()}(${['일','월','화','수','목','금','토'][d.getDay()]})`;
+}
 
 function getWeekDates(offset) {
   const today=new Date(), dow=today.getDay();
   const mon=new Date(today);
   mon.setDate(today.getDate()-(dow===0?6:dow-1)+offset*7);
-  return Array.from({length:7},(_,i)=>{const d=new Date(mon);d.setDate(mon.getDate()+i);return fmt(d);});
+  return Array.from({length:7},(_,i)=>{ const d=new Date(mon); d.setDate(mon.getDate()+i); return fmt(d); });
 }
-function fmt(d){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
-function fmtDisp(s){const d=new Date(s);return `${d.getMonth()+1}/${d.getDate()}(${['일','월','화','수','목','금','토'][d.getDay()]})`;}
 
 function switchLoginTab(tab,el){
-  document.querySelectorAll('.login-tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');
+  document.querySelectorAll('.login-tab').forEach(t=>t.classList.remove('active')); el.classList.add('active');
   document.getElementById('loginForm').style.display=tab==='login'?'block':'none';
   document.getElementById('signupForm').style.display=tab==='signup'?'block':'none';
 }
@@ -339,10 +358,8 @@ async function signup(){
   showAlert('signupAlert','가입 처리 중...','success');
   try {
     const r=await apiPost({action:'signup',name:dog,pw,guardian:g,phone:ph,breed,addr,addrDetail:addrD});
-    if(r.success){
-      showAlert('signupAlert',r.message,'success');
-      setTimeout(()=>switchLoginTab('login',document.querySelectorAll('.login-tab')[0]),1500);
-    } else showAlert('signupAlert',r.message,'error');
+    if(r.success){ showAlert('signupAlert',r.message,'success'); setTimeout(()=>switchLoginTab('login',document.querySelectorAll('.login-tab')[0]),1500); }
+    else showAlert('signupAlert',r.message,'error');
   } catch(e){ showAlert('signupAlert','오류가 발생했어요. 다시 시도해주세요.','error'); }
 }
 
@@ -360,19 +377,19 @@ async function login(){
       document.getElementById('headerSub').textContent=`${r.user.name} 보호자님 👋`;
       const fullAddr=(r.user.addr||'')+(r.user.addrDetail?' '+r.user.addrDetail:'');
       ['addr2','addr3','addr4','hotelAddrText'].forEach(id=>document.getElementById(id).textContent=fullAddr);
-      updateTicketDisplay();weekOffset=0;loadSchedule();renderMypage();
+      updateTicketDisplay(); weekOffset=0; loadSchedule(); renderMypage();
       const today=fmt(new Date());
-      document.getElementById('reserveDate').min=today;document.getElementById('reserveDate').value=today;
-      document.getElementById('hotelCheckIn').min=today;document.getElementById('hotelCheckOut').min=today;
+      document.getElementById('reserveDate').min=today; document.getElementById('reserveDate').value=today;
+      document.getElementById('hotelCheckIn').min=today; document.getElementById('hotelCheckOut').min=today;
     } else showAlert('loginAlert',r.message,'error');
   } catch(e){ showAlert('loginAlert','오류가 발생했어요. 다시 시도해주세요.','error'); }
 }
 
 function logout(){
-  currentUser=null;scheduleData={reservations:[],hotels:[]};
+  currentUser=null; scheduleData={reservations:[],hotels:[]};
   document.getElementById('mainScreen').style.display='none';
   document.getElementById('loginScreen').style.display='flex';
-  document.getElementById('loginDog').value='';document.getElementById('loginPw').value='';
+  document.getElementById('loginDog').value=''; document.getElementById('loginPw').value='';
 }
 
 async function loadSchedule(){
@@ -386,33 +403,44 @@ async function loadSchedule(){
 
 function renderWeek(){
   const days=['월','화','수','목','금','토','일'];
-  const todayStr=fmt(new Date()),week=getWeekDates(weekOffset);
-  const s=new Date(week[0]),e=new Date(week[6]);
+  const todayStr=fmt(new Date()), week=getWeekDates(weekOffset);
+  const s=new Date(week[0]), e=new Date(week[6]);
   document.getElementById('weekLabel').textContent=`${s.getMonth()+1}/${s.getDate()} ~ ${e.getMonth()+1}/${e.getDate()}`;
-  const grid=document.getElementById('weekGrid');grid.innerHTML='';
+  const grid=document.getElementById('weekGrid'); grid.innerHTML='';
+
   week.forEach((dateStr,i)=>{
-    const kindy=(scheduleData.reservations||[]).filter(r=>r.date===dateStr&&r.status==='확정');
-    const hotel=(scheduleData.hotels||[]).filter(r=>r.checkIn<=dateStr&&r.checkOut>=dateStr&&r.status==='확정');
+    // dateStr은 "2026-06-28" 형식
+    // DB에서 오는 r.date는 "20260628" 또는 "2026-06-28" 둘 다 가능
+    // 모두 compact로 변환해서 비교
+    const compact = toCompact(dateStr); // "20260628"
+
+    const kindy=(scheduleData.reservations||[]).filter(r=>{
+      return toCompact(String(r.date||''))===compact && r.status==='확정';
+    });
+    const hotel=(scheduleData.hotels||[]).filter(r=>{
+      const ci=toCompact(String(r.checkIn||'')), co=toCompact(String(r.checkOut||''));
+      return ci<=compact && compact<=co && r.status==='확정';
+    });
     const res=[...kindy,...hotel.map(r=>({...r,type:'hotel'}))];
-    const d=new Date(dateStr),isToday=dateStr===todayStr,dow=d.getDay();
+    const d=new Date(dateStr), isToday=dateStr===todayStr, dow=d.getDay();
     let hc=isToday?'today':dow===6?'sat':dow===0?'sun':'';
-    const col=document.createElement('div');col.className='day-col';
+    const col=document.createElement('div'); col.className='day-col';
     col.innerHTML=`<div class="day-header ${hc}">${days[i]}<br><span style="font-size:9px;font-weight:400">${d.getMonth()+1}/${d.getDate()}</span></div>
       <div class="day-body">${res.length===0?'<div class="no-dog">없음</div>':res.map(r=>`<div class="dog-chip${r.type==='hotel'?' hotel':''}">${r.dog}${r.type==='hotel'?'🏨':''}</div>`).join('')}</div>`;
     grid.appendChild(col);
   });
 }
-function changeWeek(dir){weekOffset+=dir;renderWeek();}
+function changeWeek(dir){ weekOffset+=dir; renderWeek(); }
 
 function switchService(svc,el){
-  document.querySelectorAll('.service-tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');
+  document.querySelectorAll('.service-tab').forEach(t=>t.classList.remove('active')); el.classList.add('active');
   document.getElementById('kindyForm').style.display=svc==='kindy'?'block':'none';
   document.getElementById('hotelForm').style.display=svc==='hotel'?'block':'none';
 }
 
 function pickTransport(val,el){
   selectedTransport=val;
-  document.querySelectorAll('#kindyForm .transport-btn').forEach(b=>b.classList.remove('sel'));el.classList.add('sel');
+  document.querySelectorAll('#kindyForm .transport-btn').forEach(b=>b.classList.remove('sel')); el.classList.add('sel');
   ['tg1','tg2','tg3','tg4'].forEach(id=>document.getElementById(id).style.display='none');
   if(val==='전체자차') document.getElementById('tg1').style.display='block';
   else if(val==='자차+드랍') document.getElementById('tg2').style.display='block';
@@ -422,7 +450,7 @@ function pickTransport(val,el){
 
 function pickHotelTransport(val,el){
   selectedHotelTransport=val;
-  document.querySelectorAll('#hotelForm .transport-btn').forEach(b=>b.classList.remove('sel'));el.classList.add('sel');
+  document.querySelectorAll('#hotelForm .transport-btn').forEach(b=>b.classList.remove('sel')); el.classList.add('sel');
   document.getElementById('hotelAddrDisplay').style.display=(val.includes('픽업')||val.includes('드랍'))?'block':'none';
 }
 
@@ -430,20 +458,22 @@ function updateTicketDisplay(){
   const t=Number(currentUser.tickets)||0;
   document.getElementById('ticketNum').textContent=t;
   const w=document.getElementById('ticketWarn');
-  if(t===0){w.style.display='block';w.textContent='⛔ 횟수권이 없어요. 사장님께 충전을 요청해주세요.';}
-  else if(t<=3){w.style.display='block';w.textContent=`⚠ 횟수권이 ${t}회 남았어요.`;}
+  if(t===0){ w.style.display='block'; w.textContent='⛔ 횟수권이 없어요. 사장님께 충전을 요청해주세요.'; }
+  else if(t<=3){ w.style.display='block'; w.textContent=`⚠ 횟수권이 ${t}회 남았어요.`; }
   else w.style.display='none';
 }
 
 async function submitKindy(){
   const date=document.getElementById('reserveDate').value;
-  const dateFmt=date.replace(/-/g,''); // 20260628 형식으로 변환 (구글시트 날짜 자동변환 방지)
-  if(!date){showAlert('reserveAlert','날짜를 선택해주세요.','error');return;}
-  if(!selectedTransport){showAlert('reserveAlert','이동 방법을 선택해주세요.','error');return;}
-  if(selectedTransport==='전체자차'&&(!document.getElementById('t1arrive').value||!document.getElementById('t1return').value)){showAlert('reserveAlert','등원/하원 시간을 모두 선택해주세요.','error');return;}
-  if(selectedTransport==='자차+드랍'&&!document.getElementById('t2arrive').value){showAlert('reserveAlert','등원 시간을 선택해주세요.','error');return;}
-  if(selectedTransport==='픽업+자차'&&!document.getElementById('t3return').value){showAlert('reserveAlert','하원 시간을 선택해주세요.','error');return;}
-  if(Number(currentUser.tickets||0)<=0){showAlert('reserveAlert','횟수권 잔여 횟수가 없어요.','error');return;}
+  if(!date){ showAlert('reserveAlert','날짜를 선택해주세요.','error'); return; }
+  if(!selectedTransport){ showAlert('reserveAlert','이동 방법을 선택해주세요.','error'); return; }
+  if(selectedTransport==='전체자차'&&(!document.getElementById('t1arrive').value||!document.getElementById('t1return').value)){ showAlert('reserveAlert','등원/하원 시간을 모두 선택해주세요.','error'); return; }
+  if(selectedTransport==='자차+드랍'&&!document.getElementById('t2arrive').value){ showAlert('reserveAlert','등원 시간을 선택해주세요.','error'); return; }
+  if(selectedTransport==='픽업+자차'&&!document.getElementById('t3return').value){ showAlert('reserveAlert','하원 시간을 선택해주세요.','error'); return; }
+  if(Number(currentUser.tickets||0)<=0){ showAlert('reserveAlert','횟수권 잔여 횟수가 없어요.','error'); return; }
+
+  const dateFmt = toCompact(date); // "20260628" 형식 — 구글시트 날짜 자동변환 방지
+
   let timeVal='';
   if(selectedTransport==='전체자차') timeVal='등원:'+document.getElementById('t1arrive').value+' / 하원:'+document.getElementById('t1return').value;
   else if(selectedTransport==='자차+드랍') timeVal='등원:'+document.getElementById('t2arrive').value;
@@ -454,34 +484,34 @@ async function submitKindy(){
   try {
     const r=await apiPost({action:'reserve',date:dateFmt,dog:currentUser.name,breed:currentUser.breed||'',guardian:currentUser.guardian,phone:currentUser.phone,transport:selectedTransport,arrivalTime:timeVal,addr:needAddr?fullAddr:''});
     if(r.success){
-      currentUser.tickets=r.tickets;updateTicketDisplay();
+      currentUser.tickets=r.tickets; updateTicketDisplay();
       showAlert('reserveAlert',r.message,'success');
       selectedTransport='';
       document.querySelectorAll('#kindyForm .transport-btn').forEach(b=>b.classList.remove('sel'));
       ['tg1','tg2','tg3','tg4'].forEach(id=>document.getElementById(id).style.display='none');
       document.getElementById('kindyNote').value='';
-      loadSchedule();loadMyReservations();
+      loadSchedule(); loadMyReservations();
     } else showAlert('reserveAlert',r.message,'error');
   } catch(e){ showAlert('reserveAlert','오류가 발생했어요.','error'); }
 }
 
 async function submitHotel(){
-  const ci=document.getElementById('hotelCheckIn').value,co=document.getElementById('hotelCheckOut').value;
-  if(!ci||!co){showAlert('hotelAlert','입실/퇴실 날짜를 선택해주세요.','error');return;}
-  if(ci>=co){showAlert('hotelAlert','퇴실 날짜는 입실 이후여야 해요.','error');return;}
-  if(!selectedHotelTransport){showAlert('hotelAlert','이동 방법을 선택해주세요.','error');return;}
+  const ci=document.getElementById('hotelCheckIn').value, co=document.getElementById('hotelCheckOut').value;
+  if(!ci||!co){ showAlert('hotelAlert','입실/퇴실 날짜를 선택해주세요.','error'); return; }
+  if(ci>=co){ showAlert('hotelAlert','퇴실 날짜는 입실 이후여야 해요.','error'); return; }
+  if(!selectedHotelTransport){ showAlert('hotelAlert','이동 방법을 선택해주세요.','error'); return; }
   const needAddr=selectedHotelTransport.includes('픽업')||selectedHotelTransport.includes('드랍');
   const fullAddr=(currentUser.addr||'')+(currentUser.addrDetail?' '+currentUser.addrDetail:'');
   showAlert('hotelAlert','예약 요청 중...','success');
   try {
-    const r=await apiPost({action:'hotelReserve',checkIn:ci.replace(/-/g,''),checkOut:co.replace(/-/g,''),dog:currentUser.name,guardian:currentUser.guardian,phone:currentUser.phone,transport:selectedHotelTransport,addr:needAddr?fullAddr:'',note:document.getElementById('hotelNote').value});
+    const r=await apiPost({action:'hotelReserve',checkIn:toCompact(ci),checkOut:toCompact(co),dog:currentUser.name,guardian:currentUser.guardian,phone:currentUser.phone,transport:selectedHotelTransport,addr:needAddr?fullAddr:'',note:document.getElementById('hotelNote').value});
     if(r.success){
       showAlert('hotelAlert',r.message,'success');
       selectedHotelTransport='';
       document.querySelectorAll('#hotelForm .transport-btn').forEach(b=>b.classList.remove('sel'));
       document.getElementById('hotelNote').value='';
       document.getElementById('hotelAddrDisplay').style.display='none';
-      loadSchedule();loadMyReservations();
+      loadSchedule(); loadMyReservations();
     } else showAlert('hotelAlert',r.message,'error');
   } catch(e){ showAlert('hotelAlert','오류가 발생했어요.','error'); }
 }
@@ -492,9 +522,12 @@ async function loadMyReservations(){
     if(!r.success) return;
     const kindy=(r.reservations||[]).map(x=>({...x,type:'kindy'}));
     const hotel=(r.hotels||[]).map(x=>({...x,type:'hotel'}));
-    const all=[...kindy,...hotel].sort((a,b)=>(a.date||a.checkIn).localeCompare(b.date||b.checkIn));
+    const all=[...kindy,...hotel].sort((a,b)=>{
+      const da=toCompact(String(a.date||a.checkIn||'')), db=toCompact(String(b.date||b.checkIn||''));
+      return da.localeCompare(db);
+    });
     const list=document.getElementById('myReserveList');
-    if(!all.length){list.innerHTML='<div class="empty-state">📋<br>예약 내역이 없어요</div>';return;}
+    if(!all.length){ list.innerHTML='<div class="empty-state">📋<br>예약 내역이 없어요</div>'; return; }
     list.innerHTML=all.map(r=>{
       if(r.type==='hotel') return `<div class="reserve-item"><div class="reserve-top">
         <div><div class="reserve-date"><span class="badge badge-hotel">호텔</span> ${fmtDisp(r.checkIn)}~${fmtDisp(r.checkOut)}</div>
@@ -521,21 +554,22 @@ function renderMypage(){
 }
 
 function openCancel(id,type,dateStr){
-  cancelTargetId=id;cancelType=type;
-  const dl=new Date(dateStr);dl.setDate(dl.getDate()-1);dl.setHours(18,0,0,0);
+  cancelTargetId=id; cancelType=type; cancelDateStr=String(dateStr);
+  const normD=normDate(cancelDateStr);
+  const dl=new Date(normD); dl.setDate(dl.getDate()-1); dl.setHours(18,0,0,0);
   document.getElementById('cancelModalMsg').textContent=type==='hotel'
     ?'호텔링 예약을 취소할까요? 카카오채널로도 취소 연락 주세요.'
     :new Date()<dl?'취소 시 횟수권 1회가 복구돼요.':'취소 기한이 지나 횟수권은 복구되지 않아요.';
   document.getElementById('cancelModal').classList.add('show');
 }
-function closeCancel(){document.getElementById('cancelModal').classList.remove('show');}
+function closeCancel(){ document.getElementById('cancelModal').classList.remove('show'); }
 async function doCancel(){
   closeCancel();
   try {
     const r=await apiPost({action:'cancelReservation',id:cancelTargetId,dog:currentUser.name,type:cancelType});
     if(r.success){
       if(r.refund) currentUser.tickets=(Number(currentUser.tickets)||0)+1;
-      updateTicketDisplay();loadSchedule();loadMyReservations();
+      updateTicketDisplay(); loadSchedule(); loadMyReservations();
       alert(r.message);
     }
   } catch(e){ alert('오류가 발생했어요.'); }
@@ -544,7 +578,7 @@ async function doCancel(){
 function goTab(name,el){
   document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  document.getElementById(name+'Section').classList.add('active');el.classList.add('active');
+  document.getElementById(name+'Section').classList.add('active'); el.classList.add('active');
   if(name==='schedule') loadSchedule();
   else if(name==='mypage') renderMypage();
 }
@@ -560,7 +594,7 @@ function transportBadge(t){
 function showAlert(id,msg,type){
   const el=document.getElementById(id);
   el.innerHTML=`<div class="alert alert-${type}">${msg}</div>`;
-  if(type==='error') setTimeout(()=>{el.innerHTML='';},4000);
+  if(type==='error') setTimeout(()=>{ el.innerHTML=''; },4000);
 }
 </script>
 </body>
