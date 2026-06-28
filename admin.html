@@ -502,7 +502,7 @@ function renderMembers() {
       <div class="member-actions">
         <button class="btn-sm btn-reset-pw" onclick="openResetPw('${u.name}')">🔑 비번 초기화</button>
         <button class="btn-sm btn-edit" onclick="openEdit('${u.name}')">✏️ 정보 수정</button>
-        <button class="btn-sm btn-charge" onclick="openCharge('${u.name}')">🎟 횟수권 충전</button>
+        <button class="btn-sm btn-charge" onclick="openCharge('${u.name}')">🎟 횟수권 충전</button> <button class="btn-sm" style="background:#b71c1c;color:white;" onclick="deleteMember('${u.name}')">🗑 삭제</button>
       </div>
     </div>`;
   }).join('');
@@ -597,7 +597,14 @@ function goTab(name,el){
   else if(name==='customers') renderCustomers();
   else if(name==='members') renderMembers();
 }
-
+function deleteMember(name){
+  if(!confirm(`⚠️ [${name}] 회원을 삭제할까요?\n예약 내역도 함께 삭제돼요.`)) return;
+  delete db.users[name];
+  db.reservations = db.reservations.filter(r => r.dog !== name);
+  saveDB();
+  renderMembers();
+  renderCustomers();
+  alert(`✅ ${name} 회원이 삭제됐어요.`);
 function closeModal(id){document.getElementById(id).classList.remove('show');}
 function transportBadge(t){
   if(!t) return '-';
