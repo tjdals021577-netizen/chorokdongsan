@@ -8,8 +8,6 @@
 * { box-sizing:border-box; margin:0; padding:0; }
 body { font-family:-apple-system,'Noto Sans KR',sans-serif; background:#f0f2f8; color:#222; min-height:100vh; }
 .app { max-width:520px; margin:0 auto; background:white; min-height:100vh; display:flex; flex-direction:column; }
-
-/* 로그인 */
 .login-screen { flex:1; display:flex; flex-direction:column; }
 .login-hero { background:linear-gradient(160deg,#1a237e,#3949ab); padding:48px 24px 36px; text-align:center; color:white; }
 .login-hero .icon { font-size:44px; margin-bottom:12px; }
@@ -22,12 +20,9 @@ body { font-family:-apple-system,'Noto Sans KR',sans-serif; background:#f0f2f8; 
 .form-input:focus { outline:none; border-color:#1a237e; background:white; }
 textarea.form-input { resize:vertical; min-height:64px; font-family:inherit; line-height:1.6; }
 .btn-primary { width:100%; padding:13px; background:#1a237e; color:white; border:none; border-radius:12px; font-size:15px; font-weight:700; cursor:pointer; }
-.login-hint { margin-top:14px; background:#e8eaf6; border-radius:10px; padding:12px 15px; font-size:12px; color:#283593; line-height:1.8; }
 .alert { padding:10px 13px; border-radius:8px; font-size:13px; margin-top:8px; }
 .alert-error { background:#ffebee; color:#b71c1c; }
 .alert-success { background:#e8f5e9; color:#1b5e20; }
-
-/* 메인 */
 .main-screen { flex:1; display:none; flex-direction:column; }
 .header { background:#1a237e; color:white; padding:13px 16px; display:flex; align-items:center; justify-content:space-between; }
 .header h1 { font-size:15px; font-weight:700; }
@@ -41,14 +36,10 @@ textarea.form-input { resize:vertical; min-height:64px; font-family:inherit; lin
 .card { background:white; border-radius:14px; padding:15px; margin-bottom:12px; box-shadow:0 1px 6px rgba(0,0,0,.06); }
 .card-title { font-size:13px; font-weight:700; color:#333; margin-bottom:12px; display:flex; align-items:center; justify-content:space-between; }
 .refresh-btn { background:#f0f2f8; border:none; border-radius:7px; padding:5px 10px; font-size:11px; color:#555; cursor:pointer; }
-
-/* 통계 */
 .stat-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:9px; margin-bottom:12px; }
 .stat-card { background:white; border-radius:12px; padding:13px 8px; text-align:center; box-shadow:0 1px 6px rgba(0,0,0,.06); }
 .stat-num { font-size:26px; font-weight:800; color:#1a237e; line-height:1; }
 .stat-label { font-size:10px; color:#888; margin-top:4px; }
-
-/* 테이블 */
 .table-wrap { overflow-x:auto; margin:0 -4px; }
 table { width:100%; border-collapse:collapse; font-size:12px; }
 th { background:#f5f6ff; padding:8px; text-align:left; font-weight:700; color:#555; border-bottom:1px solid #eee; white-space:nowrap; }
@@ -62,18 +53,14 @@ tr:last-child td { border-bottom:none; }
 .badge-danger { background:#ffebee; color:#b71c1c; }
 .badge-ok { background:#e8f5e9; color:#2e7d32; }
 .badge-hotel { background:#1a237e; color:white; }
-.badge-pending { background:#fff9c4; color:#f57f17; }
-
-/* 버튼 */
 .btn-sm { padding:5px 10px; border:none; border-radius:7px; font-size:11px; font-weight:600; cursor:pointer; white-space:nowrap; }
 .btn-charge { background:#1a237e; color:white; }
 .btn-reset-pw { background:#e65100; color:white; }
 .btn-edit { background:#37474f; color:white; }
+.btn-delete { background:#b71c1c; color:white; }
 .btn-confirm-hotel { background:#2e7d32; color:white; }
 .btn-add { background:#2e7d32; color:white; padding:12px; border-radius:10px; font-size:14px; font-weight:700; cursor:pointer; border:none; width:100%; margin-top:6px; }
 .form-row { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
-
-/* 회원 카드 */
 .member-card { background:white; border-radius:12px; border:1px solid #eee; margin-bottom:10px; overflow:hidden; box-shadow:0 1px 4px rgba(0,0,0,.05); }
 .member-card-header { background:#f5f6ff; padding:11px 14px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid #eee; }
 .member-card-name { font-size:14px; font-weight:700; color:#1a237e; display:flex; align-items:center; gap:6px; }
@@ -84,26 +71,19 @@ tr:last-child td { border-bottom:none; }
 .member-key { color:#888; min-width:72px; flex-shrink:0; }
 .member-val { color:#222; font-weight:500; flex:1; word-break:break-all; }
 .member-val.pw { font-family:monospace; background:#fff9c4; padding:2px 8px; border-radius:5px; color:#333; font-size:13px; letter-spacing:1px; }
-.member-val.addr { font-size:11px; color:#444; }
 .member-actions { display:flex; gap:6px; padding:10px 14px; border-top:1px solid #f0f0f0; background:#fafafa; flex-wrap:wrap; }
 .ticket-highlight { color:#2e7d32; font-weight:800; font-size:14px; }
 .ticket-zero { color:#b71c1c; font-weight:800; font-size:14px; }
 .ticket-low { color:#e65100; font-weight:800; font-size:14px; }
-
-/* 검색 */
 .search-box { position:relative; margin-bottom:12px; }
 .search-box input { width:100%; padding:10px 13px 10px 36px; border:1.5px solid #e0e0e0; border-radius:10px; font-size:13px; background:white; }
 .search-box input:focus { outline:none; border-color:#1a237e; }
 .search-icon { position:absolute; left:12px; top:50%; transform:translateY(-50%); color:#aaa; font-size:16px; }
-
-/* 픽업 아이템 */
 .pickup-item { padding:11px 0; border-bottom:1px solid #f5f5f5; }
 .pickup-item:last-child { border-bottom:none; }
 .pickup-name { font-size:14px; font-weight:700; }
 .pickup-detail { font-size:11px; color:#666; margin-top:3px; line-height:1.7; }
 .pickup-addr { font-size:12px; color:#1a237e; font-weight:600; margin-top:3px; }
-
-/* 모달 */
 .modal-bg { display:none; position:fixed; inset:0; background:rgba(0,0,0,.45); z-index:200; align-items:center; justify-content:center; padding:20px; }
 .modal-bg.show { display:flex; }
 .modal { background:white; border-radius:16px; padding:24px 20px; width:100%; max-width:480px; max-height:90vh; overflow-y:auto; }
@@ -133,7 +113,6 @@ tr:last-child td { border-bottom:none; }
     </div>
     <div id="loginAlert"></div>
     <button class="btn-primary" onclick="doLogin()">로그인</button>
-    <div class="login-hint">테스트 비밀번호: <strong>admin1234</strong></div>
   </div>
 </div>
 
@@ -172,18 +151,9 @@ tr:last-child td { border-bottom:none; }
 
     <!-- 픽업/드랍 -->
     <div class="section" id="pickupSection">
-      <div class="card">
-        <div class="card-title">🚗 오늘 픽업 목록</div>
-        <div id="pickupList"></div>
-      </div>
-      <div class="card">
-        <div class="card-title">📦 오늘 드랍 목록</div>
-        <div id="dropList"></div>
-      </div>
-      <div class="card">
-        <div class="card-title">🚶 자차 등원 (도착 예정)</div>
-        <div id="selfList"></div>
-      </div>
+      <div class="card"><div class="card-title">🚗 오늘 픽업 목록</div><div id="pickupList"></div></div>
+      <div class="card"><div class="card-title">📦 오늘 드랍 목록</div><div id="dropList"></div></div>
+      <div class="card"><div class="card-title">🚶 전체 자차 등원</div><div id="selfList"></div></div>
     </div>
 
     <!-- 호텔링 -->
@@ -199,13 +169,10 @@ tr:last-child td { border-bottom:none; }
       </div>
     </div>
 
-    <!-- 횟수권 관리 -->
+    <!-- 횟수권 -->
     <div class="section" id="customersSection">
       <div class="card">
-        <div class="card-title">
-          <span>🎟 횟수권 현황</span>
-          <button class="refresh-btn" onclick="renderCustomers()">🔄</button>
-        </div>
+        <div class="card-title"><span>🎟 횟수권 현황</span><button class="refresh-btn" onclick="renderCustomers()">🔄</button></div>
         <div class="table-wrap">
           <table>
             <thead><tr><th>강아지</th><th>보호자</th><th>연락처</th><th>잔여</th><th>상태</th><th>충전</th></tr></thead>
@@ -246,23 +213,19 @@ tr:last-child td { border-bottom:none; }
           <div class="form-group"><label class="form-label">비밀번호</label><input class="form-input" id="newPw" placeholder="1234"/></div>
           <div class="form-group"><label class="form-label">초기 횟수권</label><input class="form-input" id="newTickets" type="number" value="10"/></div>
         </div>
-        <div class="form-group"><label class="form-label">특이사항</label><textarea class="form-input" id="newNote" placeholder="알러지, 지병, 성격 등 특이사항"></textarea></div>
+        <div class="form-group"><label class="form-label">특이사항</label><textarea class="form-input" id="newNote" placeholder="알러지, 지병, 성격 등"></textarea></div>
         <button class="btn-add" onclick="addCustomer()">등록하기</button>
       </div>
     </div>
-
   </div>
 </div>
 </div>
 
-<!-- 횟수권 충전 모달 -->
+<!-- 충전 모달 -->
 <div class="modal-bg" id="chargeModal">
   <div class="modal">
     <h3 id="chargeTitle">횟수권 충전</h3>
-    <div class="form-group">
-      <label class="form-label">충전 횟수</label>
-      <input class="form-input" id="chargeAmt" type="number" value="10" min="1"/>
-    </div>
+    <div class="form-group"><label class="form-label">충전 횟수</label><input class="form-input" id="chargeAmt" type="number" value="10" min="1"/></div>
     <div class="modal-btns">
       <button class="btn-back" onclick="closeModal('chargeModal')">취소</button>
       <button class="btn-confirm" onclick="doCharge()">충전하기</button>
@@ -275,10 +238,7 @@ tr:last-child td { border-bottom:none; }
   <div class="modal">
     <h3 id="resetPwTitle">비밀번호 초기화</h3>
     <p style="font-size:13px;color:#666;margin-bottom:12px;">새 비밀번호를 설정해주세요.</p>
-    <div class="form-group">
-      <label class="form-label">새 비밀번호</label>
-      <input class="form-input" id="newPwReset" placeholder="새 비밀번호 입력" />
-    </div>
+    <div class="form-group"><label class="form-label">새 비밀번호</label><input class="form-input" id="newPwReset" placeholder="새 비밀번호 입력"/></div>
     <div id="resetPwAlert"></div>
     <div class="modal-btns">
       <button class="btn-back" onclick="closeModal('resetPwModal')">취소</button>
@@ -287,7 +247,7 @@ tr:last-child td { border-bottom:none; }
   </div>
 </div>
 
-<!-- 회원 정보 수정 모달 -->
+<!-- 정보 수정 모달 -->
 <div class="modal-bg" id="editModal">
   <div class="modal">
     <h3 id="editModalTitle">회원 정보 수정</h3>
@@ -312,38 +272,13 @@ tr:last-child td { border-bottom:none; }
 </div>
 
 <script>
+// ── DB: localStorage만 사용, 더미 데이터 없음
 function loadDB() {
-  const week = getWeekDates();
-  const def = {
-    users: {
-      '콩이': { pw:'1234', name:'콩이', guardian:'김보호자', phone:'010-1234-5678', breed:'말티즈', tickets:8, addr:'제주시 연동 123-4', addrDetail:'101호', note:'낯선 개 경계함' },
-      '두부': { pw:'1234', name:'두부', guardian:'이보호자', phone:'010-2345-6789', breed:'포메라니안', tickets:3, addr:'제주시 노형동 456', addrDetail:'', note:'' },
-      '초코': { pw:'1234', name:'초코', guardian:'박보호자', phone:'010-3456-7890', breed:'푸들', tickets:0, addr:'제주시 도두동 789', addrDetail:'', note:'닭고기 알러지 있음' },
-      '망고': { pw:'1234', name:'망고', guardian:'최보호자', phone:'010-4567-8901', breed:'비숑프리제', tickets:12, addr:'서귀포시 중문동 321', addrDetail:'', note:'' },
-      '루루': { pw:'1234', name:'루루', guardian:'정보호자', phone:'010-5678-9012', breed:'시츄', tickets:2, addr:'제주시 아라동 654', addrDetail:'', note:'분리불안 있음' },
-      '하루': { pw:'1234', name:'하루', guardian:'강보호자', phone:'010-6789-0123', breed:'골든리트리버', tickets:5, addr:'제주시 이도동 987', addrDetail:'', note:'' },
-      '보리': { pw:'1234', name:'보리', guardian:'윤보호자', phone:'010-7890-1234', breed:'진돗개', tickets:1, addr:'서귀포시 대정읍 111', addrDetail:'', note:'수컷 개 공격성 있음' },
-    },
-    reservations: [
-      { id:'r1', type:'kindy', date:week[0], dog:'두부', breed:'포메라니안', guardian:'이보호자', phone:'010-2345-6789', transport:'자차 등원', arrivalTime:'09:00', addr:'', note:'', status:'확정' },
-      { id:'r2', type:'kindy', date:week[0], dog:'망고', breed:'비숑프리제', guardian:'최보호자', phone:'010-4567-8901', transport:'픽업 요청', arrivalTime:'', addr:'서귀포시 중문동 321', note:'', status:'확정' },
-      { id:'r3', type:'kindy', date:week[0], dog:'하루', breed:'골든리트리버', guardian:'강보호자', phone:'010-6789-0123', transport:'픽업+드랍', arrivalTime:'', addr:'제주시 이도동 987', note:'', status:'확정' },
-      { id:'r4', type:'kindy', date:week[1], dog:'초코', breed:'푸들', guardian:'박보호자', phone:'010-3456-7890', transport:'드랍 요청', arrivalTime:'', addr:'제주시 도두동 789', note:'', status:'확정' },
-      { id:'r5', type:'kindy', date:week[2], dog:'콩이', breed:'말티즈', guardian:'김보호자', phone:'010-1234-5678', transport:'자차+드랍', arrivalTime:'10:00', addr:'제주시 연동 123-4 101호', note:'', status:'확정' },
-      { id:'r6', type:'kindy', date:week[4], dog:'루루', breed:'시츄', guardian:'정보호자', phone:'010-5678-9012', transport:'자차 등원', arrivalTime:'09:30', addr:'', note:'', status:'확정' },
-      { id:'r7', type:'hotel', checkIn:week[1], checkOut:week[3], dog:'보리', breed:'진돗개', guardian:'윤보호자', phone:'010-7890-1234', transport:'픽업+드랍', addr:'서귀포시 대정읍 111', note:'저녁 사료 따로 있어요', status:'확정' },
-    ]
-  };
   const saved = localStorage.getItem('chorokDB');
   if (saved) {
-    const p = JSON.parse(saved);
-    if (p.users) Object.keys(p.users).forEach(k => {
-      if (def.users[k]) { def.users[k].tickets = p.users[k].tickets; if(p.users[k].note!==undefined) def.users[k].note=p.users[k].note; if(p.users[k].pw) def.users[k].pw=p.users[k].pw; if(p.users[k].addr) def.users[k].addr=p.users[k].addr; if(p.users[k].addrDetail!==undefined) def.users[k].addrDetail=p.users[k].addrDetail; if(p.users[k].phone) def.users[k].phone=p.users[k].phone; if(p.users[k].guardian) def.users[k].guardian=p.users[k].guardian; }
-      else def.users[k] = p.users[k];
-    });
-    if (p.reservations && p.reservations.length > 0) def.reservations = p.reservations;
+    try { return JSON.parse(saved); } catch(e) {}
   }
-  return def;
+  return { users: {}, reservations: [] };
 }
 function saveDB() { localStorage.setItem('chorokDB', JSON.stringify(db)); }
 let db = loadDB();
@@ -352,26 +287,29 @@ function getWeekDates() {
   const today = new Date(), dow = today.getDay();
   const mon = new Date(today);
   mon.setDate(today.getDate() - (dow===0?6:dow-1));
-  return Array.from({length:7},(_,i)=>{ const d=new Date(mon); d.setDate(mon.getDate()+i); return fmt(d); });
+  return Array.from({length:7}, (_,i) => { const d=new Date(mon); d.setDate(mon.getDate()+i); return fmt(d); });
 }
 function fmt(d) { return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
 function fmtDisp(s) { const d=new Date(s); return `${d.getMonth()+1}/${d.getDate()}(${['일','월','화','수','목','금','토'][d.getDay()]})`; }
 
-let chargeTargetId='', resetPwTargetId='';
+let chargeTargetId = '';
+let resetPwTargetId = '';
 
 function doLogin() {
-  if(document.getElementById('adminPw').value === 'admin1234') {
-    document.getElementById('loginScreen').style.display='none';
-    document.getElementById('mainScreen').style.display='flex';
+  const pw = document.getElementById('adminPw').value;
+  if (pw === 'admin1234') {
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('mainScreen').style.display = 'flex';
     renderAll();
   } else {
-    document.getElementById('loginAlert').innerHTML='<div class="alert alert-error">비밀번호가 틀렸어요.</div>';
+    document.getElementById('loginAlert').innerHTML = '<div class="alert alert-error">비밀번호가 틀렸어요.</div>';
   }
 }
+
 function doLogout() {
-  document.getElementById('mainScreen').style.display='none';
-  document.getElementById('loginScreen').style.display='flex';
-  document.getElementById('adminPw').value='';
+  document.getElementById('mainScreen').style.display = 'none';
+  document.getElementById('loginScreen').style.display = 'flex';
+  document.getElementById('adminPw').value = '';
 }
 
 function renderAll() {
@@ -379,53 +317,49 @@ function renderAll() {
   renderToday(); renderPickup(); renderHotel(); renderCustomers(); renderMembers();
 }
 
-// ── 오늘 현황
 function renderToday() {
   const today = fmt(new Date());
-  const list = db.reservations.filter(r=>r.status==='확정'&&r.type==='kindy'&&r.date===today);
-  const pickupCnt = list.filter(r=>r.transport.includes('픽업')).length;
-  const dropCnt = list.filter(r=>r.transport.includes('드랍')).length;
-  const hotelCnt = db.reservations.filter(r=>r.type==='hotel'&&r.status==='확정'&&r.checkIn<=today&&r.checkOut>=today).length;
-  document.getElementById('statGrid').innerHTML=`
+  const list = db.reservations.filter(r => r.status==='확정' && r.type==='kindy' && r.date===today);
+  const pickupCnt = list.filter(r => r.transport && r.transport.includes('픽업')).length;
+  const hotelCnt = db.reservations.filter(r => r.type==='hotel' && r.status==='확정' && r.checkIn<=today && r.checkOut>=today).length;
+  document.getElementById('statGrid').innerHTML = `
     <div class="stat-card"><div class="stat-num">${list.length}</div><div class="stat-label">오늘 등원</div></div>
     <div class="stat-card"><div class="stat-num">${pickupCnt}</div><div class="stat-label">픽업 필요</div></div>
     <div class="stat-card"><div class="stat-num">${hotelCnt}</div><div class="stat-label">호텔 중</div></div>`;
-  const d=new Date();
-  document.getElementById('todayTitle').textContent=`${d.getMonth()+1}월 ${d.getDate()}일 예약 (${list.length}건)`;
-  const tbody=document.getElementById('todayTable');
-  if(!list.length){tbody.innerHTML='<tr><td colspan="5" class="empty-state">오늘 예약 없음</td></tr>';return;}
-  tbody.innerHTML=list.map(r=>`<tr>
+  const d = new Date();
+  document.getElementById('todayTitle').textContent = `${d.getMonth()+1}월 ${d.getDate()}일 예약 (${list.length}건)`;
+  const tbody = document.getElementById('todayTable');
+  if (!list.length) { tbody.innerHTML = '<tr><td colspan="5" class="empty-state">오늘 예약 없음</td></tr>'; return; }
+  tbody.innerHTML = list.map(r => `<tr>
     <td><strong>${r.dog}</strong></td>
-    <td style="font-size:11px;color:#666">${r.breed}</td>
+    <td style="font-size:11px;color:#666">${r.breed||''}</td>
     <td>${r.guardian}<br><span style="font-size:10px;color:#888">${r.phone}</span></td>
     <td>${transportBadge(r.transport)}</td>
-    <td style="font-size:11px;color:#555">${r.transport==='자차 등원'||r.transport==='자차+드랍'?`⏰${r.arrivalTime||'-'}`:r.addr?`📍${r.addr}`:'-'}</td>
+    <td style="font-size:11px;color:#555">${r.arrivalTime || (r.addr ? '📍'+r.addr : '-')}</td>
   </tr>`).join('');
 }
 
-// ── 픽업/드랍
 function renderPickup() {
-  const today=fmt(new Date());
-  const list=db.reservations.filter(r=>r.type==='kindy'&&r.date===today&&r.status==='확정');
-  const mkItem=r=>`<div class="pickup-item">
-    <div class="pickup-name">🐶 ${r.dog} <span style="font-size:11px;color:#888">(${r.breed})</span></div>
+  const today = fmt(new Date());
+  const list = db.reservations.filter(r => r.type==='kindy' && r.date===today && r.status==='확정');
+  const mkItem = r => `<div class="pickup-item">
+    <div class="pickup-name">🐶 ${r.dog} <span style="font-size:11px;color:#888">(${r.breed||''})</span></div>
     <div class="pickup-detail">${r.guardian} · <a href="tel:${r.phone}" style="color:#d32f2f;font-weight:700;text-decoration:none">${r.phone}</a></div>
-    ${r.addr?`<div class="pickup-addr">📍 ${r.addr}</div>`:''}
-    ${r.arrivalTime?`<div class="pickup-detail">⏰ 도착 예정: <strong>${r.arrivalTime}</strong></div>`:''}
-    ${r.note?`<div class="pickup-detail">📝 ${r.note}</div>`:''}
+    ${r.addr ? `<div class="pickup-addr">📍 ${r.addr}</div>` : ''}
+    ${r.arrivalTime ? `<div class="pickup-detail">⏰ ${r.arrivalTime}</div>` : ''}
+    ${r.note ? `<div class="pickup-detail">📝 ${r.note}</div>` : ''}
   </div>`;
-  document.getElementById('pickupList').innerHTML=list.filter(r=>r.transport.includes('픽업')).map(mkItem).join('')||'<div class="empty-state">픽업 없음</div>';
-  document.getElementById('dropList').innerHTML=list.filter(r=>r.transport.includes('드랍')).map(mkItem).join('')||'<div class="empty-state">드랍 없음</div>';
-  document.getElementById('selfList').innerHTML=list.filter(r=>r.transport==='자차 등원'||r.transport==='자차+드랍').map(mkItem).join('')||'<div class="empty-state">자차 등원 없음</div>';
+  document.getElementById('pickupList').innerHTML = list.filter(r=>r.transport&&r.transport.includes('픽업')).map(mkItem).join('') || '<div class="empty-state">픽업 없음</div>';
+  document.getElementById('dropList').innerHTML = list.filter(r=>r.transport&&r.transport.includes('드랍')).map(mkItem).join('') || '<div class="empty-state">드랍 없음</div>';
+  document.getElementById('selfList').innerHTML = list.filter(r=>r.transport==='전체자차').map(mkItem).join('') || '<div class="empty-state">자차 등원 없음</div>';
 }
 
-// ── 호텔링
 function renderHotel() {
-  const hotels=db.reservations.filter(r=>r.type==='hotel').sort((a,b)=>a.checkIn.localeCompare(b.checkIn));
-  const tbody=document.getElementById('hotelTable');
-  if(!hotels.length){tbody.innerHTML='<tr><td colspan="6" class="empty-state">호텔링 예약 없음</td></tr>';return;}
-  tbody.innerHTML=hotels.map(r=>`<tr>
-    <td><strong>${r.dog}</strong><br><span style="font-size:10px;color:#888">${r.breed}</span><br><span style="font-size:10px;color:#d32f2f">${r.phone}</span></td>
+  const hotels = db.reservations.filter(r => r.type==='hotel').sort((a,b) => a.checkIn.localeCompare(b.checkIn));
+  const tbody = document.getElementById('hotelTable');
+  if (!hotels.length) { tbody.innerHTML = '<tr><td colspan="6" class="empty-state">호텔링 예약 없음</td></tr>'; return; }
+  tbody.innerHTML = hotels.map(r => `<tr>
+    <td><strong>${r.dog}</strong><br><span style="font-size:10px;color:#888">${r.breed||''}</span><br><span style="font-size:10px;color:#d32f2f">${r.phone}</span></td>
     <td style="font-size:11px">${fmtDisp(r.checkIn)}</td>
     <td style="font-size:11px">${fmtDisp(r.checkOut)}</td>
     <td>${transportBadge(r.transport)}${r.addr?`<br><span style="font-size:10px;color:#555">📍${r.addr}</span>`:''}</td>
@@ -433,15 +367,16 @@ function renderHotel() {
     <td>${r.status==='확정'?'<span class="badge badge-ok">확정</span>':`<button class="btn-sm btn-confirm-hotel" onclick="confirmHotel('${r.id}')">확정</button>`}</td>
   </tr>`).join('');
 }
-function confirmHotel(id){const r=db.reservations.find(x=>x.id===id);if(r){r.status='확정';saveDB();renderHotel();alert('✅ 호텔링 확정!');}}
+function confirmHotel(id) { const r=db.reservations.find(x=>x.id===id); if(r){r.status='확정';saveDB();renderHotel();alert('✅ 호텔링 확정!');} }
 
-// ── 횟수권
 function renderCustomers() {
-  db=loadDB();
-  const tbody=document.getElementById('customersTable');
-  tbody.innerHTML=Object.values(db.users).map(c=>{
-    const t=c.tickets;
-    const badge=t===0?'<span class="badge badge-danger">⛔ 없음</span>':t<=2?'<span class="badge badge-warn">⚠ 부족</span>':'<span class="badge badge-ok">정상</span>';
+  db = loadDB();
+  const users = Object.values(db.users);
+  const tbody = document.getElementById('customersTable');
+  if (!users.length) { tbody.innerHTML = '<tr><td colspan="6" class="empty-state">등록된 고객 없음</td></tr>'; return; }
+  tbody.innerHTML = users.map(c => {
+    const t = c.tickets;
+    const badge = t===0?'<span class="badge badge-danger">⛔ 없음</span>':t<=2?'<span class="badge badge-warn">⚠ 부족</span>':'<span class="badge badge-ok">정상</span>';
     return `<tr>
       <td><strong>${c.name}</strong><br><span style="font-size:10px;color:#888">${c.breed||''}</span></td>
       <td>${c.guardian}</td>
@@ -453,172 +388,155 @@ function renderCustomers() {
   }).join('');
 }
 
-// ── 회원 내역
 function renderMembers() {
+  db = loadDB();
   const query = (document.getElementById('memberSearch')?.value||'').trim().toLowerCase();
   const users = Object.values(db.users).filter(u =>
     !query || u.name.toLowerCase().includes(query) || u.guardian.toLowerCase().includes(query) || u.phone.includes(query)
   );
   document.getElementById('memberCount').textContent = Object.keys(db.users).length;
   const container = document.getElementById('membersList');
-  if(!users.length){container.innerHTML='<div class="empty-state">검색 결과가 없어요</div>';return;}
+  if (!users.length) { container.innerHTML = '<div class="empty-state">등록된 회원이 없어요</div>'; return; }
   container.innerHTML = users.map(u => {
-    const t=u.tickets;
-    const ticketClass=t===0?'ticket-zero':t<=2?'ticket-low':'ticket-highlight';
+    const t = u.tickets;
+    const tc = t===0?'ticket-zero':t<=2?'ticket-low':'ticket-highlight';
     return `<div class="member-card">
       <div class="member-card-header">
-        <div class="member-card-name">
-          🐶 ${u.name}
-          <span class="member-card-breed">${u.breed||''}</span>
-        </div>
-        <span class="${ticketClass}">${t}회</span>
+        <div class="member-card-name">🐶 ${u.name} <span class="member-card-breed">${u.breed||''}</span></div>
+        <span class="${tc}">${t}회</span>
       </div>
       <div class="member-card-body">
-        <div class="member-row">
-          <span class="member-key">🆔 아이디</span>
-          <span class="member-val">${u.name}</span>
-        </div>
-        <div class="member-row">
-          <span class="member-key">🔑 비밀번호</span>
-          <span class="member-val pw">${u.pw}</span>
-        </div>
-        <div class="member-row">
-          <span class="member-key">👤 보호자</span>
-          <span class="member-val">${u.guardian}</span>
-        </div>
-        <div class="member-row">
-          <span class="member-key">📞 연락처</span>
-          <span class="member-val"><a href="tel:${u.phone}" style="color:#d32f2f;font-weight:700;text-decoration:none">${u.phone}</a></span>
-        </div>
-        <div class="member-row">
-          <span class="member-key">📍 주소</span>
-          <span class="member-val addr">${u.addr||'-'}${u.addrDetail?' '+u.addrDetail:''}</span>
-        </div>
-        <div class="member-row">
-          <span class="member-key">📝 특이사항</span>
-          <span class="member-val" style="color:${u.note?'#c62828':'#bbb'}">${u.note||'없음'}</span>
-        </div>
+        <div class="member-row"><span class="member-key">🆔 아이디</span><span class="member-val">${u.name}</span></div>
+        <div class="member-row"><span class="member-key">🔑 비밀번호</span><span class="member-val pw">${u.pw}</span></div>
+        <div class="member-row"><span class="member-key">👤 보호자</span><span class="member-val">${u.guardian}</span></div>
+        <div class="member-row"><span class="member-key">📞 연락처</span><span class="member-val"><a href="tel:${u.phone}" style="color:#d32f2f;font-weight:700;text-decoration:none">${u.phone}</a></span></div>
+        <div class="member-row"><span class="member-key">📍 주소</span><span class="member-val">${u.addr||'-'}${u.addrDetail?' '+u.addrDetail:''}</span></div>
+        <div class="member-row"><span class="member-key">📝 특이사항</span><span class="member-val" style="color:${u.note?'#c62828':'#bbb'}">${u.note||'없음'}</span></div>
       </div>
       <div class="member-actions">
         <button class="btn-sm btn-reset-pw" onclick="openResetPw('${u.name}')">🔑 비번 초기화</button>
         <button class="btn-sm btn-edit" onclick="openEdit('${u.name}')">✏️ 정보 수정</button>
-        <button class="btn-sm btn-charge" onclick="openCharge('${u.name}')">🎟 횟수권 충전</button> <button class="btn-sm" style="background:#b71c1c;color:white;" onclick="deleteMember('${u.name}')">🗑 삭제</button>
+        <button class="btn-sm btn-charge" onclick="openCharge('${u.name}')">🎟 충전</button>
+        <button class="btn-sm btn-delete" onclick="deleteMember('${u.name}')">🗑 삭제</button>
       </div>
     </div>`;
   }).join('');
 }
 
-// ── 충전
-function openCharge(name){chargeTargetId=name;document.getElementById('chargeTitle').textContent=`${name} 횟수권 충전`;document.getElementById('chargeAmt').value='10';document.getElementById('chargeModal').classList.add('show');}
-function doCharge(){
-  const amt=parseInt(document.getElementById('chargeAmt').value);
-  if(!amt||amt<1){alert('충전 횟수를 입력해주세요.');return;}
-  const u=db.users[chargeTargetId];
-  if(u){u.tickets+=amt;saveDB();alert(`✅ ${u.name} ${amt}회 충전 완료!\n잔여: ${u.tickets}회`);}
-  closeModal('chargeModal');renderCustomers();renderMembers();
+function openCharge(name) {
+  chargeTargetId = name;
+  document.getElementById('chargeTitle').textContent = `${name} 횟수권 충전`;
+  document.getElementById('chargeAmt').value = '10';
+  document.getElementById('chargeModal').classList.add('show');
+}
+function doCharge() {
+  const amt = parseInt(document.getElementById('chargeAmt').value);
+  if (!amt||amt<1) { alert('충전 횟수를 입력해주세요.'); return; }
+  const u = db.users[chargeTargetId];
+  if (u) { u.tickets += amt; saveDB(); alert(`✅ ${u.name} ${amt}회 충전!\n잔여: ${u.tickets}회`); }
+  closeModal('chargeModal'); renderCustomers(); renderMembers();
 }
 
-// ── 비밀번호 초기화
-function openResetPw(name){
-  resetPwTargetId=name;
-  document.getElementById('resetPwTitle').textContent=`${name} 비밀번호 초기화`;
-  document.getElementById('newPwReset').value='';
-  document.getElementById('resetPwAlert').innerHTML='';
+function openResetPw(name) {
+  resetPwTargetId = name;
+  document.getElementById('resetPwTitle').textContent = `${name} 비밀번호 초기화`;
+  document.getElementById('newPwReset').value = '';
+  document.getElementById('resetPwAlert').innerHTML = '';
   document.getElementById('resetPwModal').classList.add('show');
 }
-function doResetPw(){
-  const newPw=document.getElementById('newPwReset').value.trim();
-  if(!newPw){document.getElementById('resetPwAlert').innerHTML='<div class="alert alert-error">새 비밀번호를 입력해주세요.</div>';return;}
-  db.users[resetPwTargetId].pw=newPw;
-  saveDB();
-  closeModal('resetPwModal');
-  renderMembers();
-  alert(`✅ ${resetPwTargetId} 비밀번호가 [${newPw}] 로 변경됐어요.`);
+function doResetPw() {
+  const newPw = document.getElementById('newPwReset').value.trim();
+  if (!newPw) { document.getElementById('resetPwAlert').innerHTML='<div class="alert alert-error">새 비밀번호를 입력해주세요.</div>'; return; }
+  db.users[resetPwTargetId].pw = newPw;
+  saveDB(); closeModal('resetPwModal'); renderMembers();
+  alert(`✅ ${resetPwTargetId} 비밀번호 변경 완료!`);
 }
 
-// ── 회원 정보 수정
-function openEdit(name){
-  const u=db.users[name];
-  document.getElementById('editModalTitle').textContent=`${name} 정보 수정`;
-  document.getElementById('editTargetId').value=name;
-  document.getElementById('editGuardian').value=u.guardian||'';
-  document.getElementById('editPhone').value=u.phone||'';
-  document.getElementById('editDog').value=u.name||'';
-  document.getElementById('editBreed').value=u.breed||'';
-  document.getElementById('editAddr').value=u.addr||'';
-  document.getElementById('editAddrDetail').value=u.addrDetail||'';
-  document.getElementById('editNote').value=u.note||'';
-  document.getElementById('editAlert').innerHTML='';
+function openEdit(name) {
+  const u = db.users[name];
+  document.getElementById('editModalTitle').textContent = `${name} 정보 수정`;
+  document.getElementById('editTargetId').value = name;
+  document.getElementById('editGuardian').value = u.guardian||'';
+  document.getElementById('editPhone').value = u.phone||'';
+  document.getElementById('editDog').value = u.name||'';
+  document.getElementById('editBreed').value = u.breed||'';
+  document.getElementById('editAddr').value = u.addr||'';
+  document.getElementById('editAddrDetail').value = u.addrDetail||'';
+  document.getElementById('editNote').value = u.note||'';
+  document.getElementById('editAlert').innerHTML = '';
   document.getElementById('editModal').classList.add('show');
 }
-function doEdit(){
-  const oldName=document.getElementById('editTargetId').value;
-  const u=db.users[oldName];
-  if(!u){closeModal('editModal');return;}
-  u.guardian=document.getElementById('editGuardian').value.trim();
-  u.phone=document.getElementById('editPhone').value.trim();
-  u.breed=document.getElementById('editBreed').value.trim();
-  u.addr=document.getElementById('editAddr').value.trim();
-  u.addrDetail=document.getElementById('editAddrDetail').value.trim();
-  u.note=document.getElementById('editNote').value.trim();
-  saveDB();
-  closeModal('editModal');
-  renderMembers();
-  renderCustomers();
-  alert(`✅ ${oldName} 정보가 수정됐어요.`);
+function doEdit() {
+  const oldName = document.getElementById('editTargetId').value;
+  const u = db.users[oldName];
+  if (!u) { closeModal('editModal'); return; }
+  u.guardian = document.getElementById('editGuardian').value.trim();
+  u.phone = document.getElementById('editPhone').value.trim();
+  u.breed = document.getElementById('editBreed').value.trim();
+  u.addr = document.getElementById('editAddr').value.trim();
+  u.addrDetail = document.getElementById('editAddrDetail').value.trim();
+  u.note = document.getElementById('editNote').value.trim();
+  saveDB(); closeModal('editModal'); renderMembers(); renderCustomers();
+  alert(`✅ ${oldName} 정보 수정 완료!`);
 }
 
-// ── 고객 등록
-function addCustomer(){
-  const g=document.getElementById('newGuardian').value.trim(), ph=document.getElementById('newPhone').value.trim();
-  const dog=document.getElementById('newDog').value.trim(), breed=document.getElementById('newBreed').value.trim();
-  const addr=document.getElementById('newAddr').value.trim(), addrD=document.getElementById('newAddrDetail').value.trim();
-  const pw=document.getElementById('newPw').value.trim()||'1234';
-  const tickets=parseInt(document.getElementById('newTickets').value)||0;
-  const note=document.getElementById('newNote').value.trim();
-  if(!g||!ph||!dog){showAlert('addAlert','필수 항목을 입력해주세요.','error');return;}
-  if(db.users[dog]){showAlert('addAlert','이미 등록된 강아지 이름이에요.','error');return;}
-  db.users[dog]={pw,name:dog,guardian:g,phone:ph,breed,tickets,addr,addrDetail:addrD,note};
-  saveDB();
-  showAlert('addAlert',`✅ ${dog} 등록 완료!`,'success');
-  ['newGuardian','newPhone','newDog','newBreed','newAddr','newAddrDetail','newPw','newNote'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('newTickets').value='10';
-  renderCustomers();renderMembers();
-}
-
-// ── 탭
-function goTab(name,el){
-  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  document.getElementById(name+'Section').classList.add('active'); el.classList.add('active');
-  if(name==='today') renderToday();
-  else if(name==='pickup') renderPickup();
-  else if(name==='hotel') renderHotel();
-  else if(name==='customers') renderCustomers();
-  else if(name==='members') renderMembers();
-}
-function deleteMember(name){
-  if(!confirm(`⚠️ [${name}] 회원을 삭제할까요?\n예약 내역도 함께 삭제돼요.`)) return;
+function deleteMember(name) {
+  if (!confirm(`⚠️ [${name}] 회원을 정말 삭제할까요?\n예약 내역도 함께 삭제돼요.`)) return;
   delete db.users[name];
   db.reservations = db.reservations.filter(r => r.dog !== name);
-  saveDB();
-  renderMembers();
-  renderCustomers();
+  saveDB(); renderMembers(); renderCustomers();
   alert(`✅ ${name} 회원이 삭제됐어요.`);
-  }
-function closeModal(id){document.getElementById(id).classList.remove('show');}
-function transportBadge(t){
-  if(!t) return '-';
-  if(t==='자차+드랍') return '<span class="badge badge-green">자차+드랍</span>';
-  if(t.includes('픽업')&&t.includes('드랍')) return '<span class="badge badge-blue">픽업+드랍</span>';
-  if(t.includes('픽업')) return '<span class="badge badge-blue">픽업</span>';
-  if(t.includes('드랍')) return '<span class="badge badge-green">드랍</span>';
-  return '<span class="badge badge-gray">자차</span>';
 }
-function showAlert(id,msg,type){
-  const el=document.getElementById(id);
-  el.innerHTML=`<div class="alert alert-${type}">${msg}</div>`;
-  setTimeout(()=>{el.innerHTML='';},3500);
+
+function addCustomer() {
+  const g = document.getElementById('newGuardian').value.trim();
+  const ph = document.getElementById('newPhone').value.trim();
+  const dog = document.getElementById('newDog').value.trim();
+  const breed = document.getElementById('newBreed').value.trim();
+  const addr = document.getElementById('newAddr').value.trim();
+  const addrD = document.getElementById('newAddrDetail').value.trim();
+  const pw = document.getElementById('newPw').value.trim() || '1234';
+  const tickets = parseInt(document.getElementById('newTickets').value) || 0;
+  const note = document.getElementById('newNote').value.trim();
+  if (!g||!ph||!dog) { showAlert('addAlert','필수 항목을 입력해주세요.','error'); return; }
+  if (db.users[dog]) { showAlert('addAlert','이미 등록된 강아지 이름이에요.','error'); return; }
+  db.users[dog] = { pw, name:dog, guardian:g, phone:ph, breed, tickets, addr, addrDetail:addrD, note };
+  saveDB();
+  showAlert('addAlert', `✅ ${dog} 등록 완료!`, 'success');
+  ['newGuardian','newPhone','newDog','newBreed','newAddr','newAddrDetail','newPw','newNote'].forEach(id => document.getElementById(id).value='');
+  document.getElementById('newTickets').value = '10';
+  renderCustomers(); renderMembers();
+}
+
+function goTab(name, el) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(name+'Section').classList.add('active');
+  el.classList.add('active');
+  if (name==='today') renderToday();
+  else if (name==='pickup') renderPickup();
+  else if (name==='hotel') renderHotel();
+  else if (name==='customers') renderCustomers();
+  else if (name==='members') renderMembers();
+}
+
+function closeModal(id) { document.getElementById(id).classList.remove('show'); }
+
+function transportBadge(t) {
+  if (!t) return '-';
+  if (t==='전체자차') return '<span class="badge badge-gray">전체자차</span>';
+  if (t==='자차+드랍') return '<span class="badge badge-green">자차+드랍</span>';
+  if (t==='픽업+자차') return '<span class="badge badge-blue">픽업+자차</span>';
+  if (t.includes('픽업')&&t.includes('드랍')) return '<span class="badge badge-blue">픽업+드랍</span>';
+  if (t.includes('픽업')) return '<span class="badge badge-blue">픽업</span>';
+  if (t.includes('드랍')) return '<span class="badge badge-green">드랍</span>';
+  return `<span class="badge badge-gray">${t}</span>`;
+}
+
+function showAlert(id, msg, type) {
+  const el = document.getElementById(id);
+  el.innerHTML = `<div class="alert alert-${type}">${msg}</div>`;
+  setTimeout(() => { el.innerHTML = ''; }, 3500);
 }
 </script>
 </body>
