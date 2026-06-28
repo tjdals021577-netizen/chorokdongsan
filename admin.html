@@ -78,11 +78,44 @@ tr:last-child td { border-bottom:none; }
 .search-box input { width:100%; padding:10px 13px 10px 36px; border:1.5px solid #e0e0e0; border-radius:10px; font-size:13px; background:white; }
 .search-box input:focus { outline:none; border-color:#1a237e; }
 .search-icon { position:absolute; left:12px; top:50%; transform:translateY(-50%); color:#aaa; font-size:16px; }
-.pickup-item { padding:11px 0; border-bottom:1px solid #f5f5f5; }
-.pickup-item:last-child { border-bottom:none; }
-.pickup-name { font-size:14px; font-weight:700; }
+/* 픽업 섹션 */
+.pickup-category { margin-bottom:14px; }
+.pickup-category-title { font-size:12px; font-weight:700; color:#555; background:#f5f6ff; border-radius:8px; padding:7px 12px; margin-bottom:8px; display:flex; align-items:center; gap:6px; }
+.pickup-item { padding:10px 12px; border:1px solid #eee; border-radius:10px; margin-bottom:7px; background:white; }
+.pickup-name { font-size:13px; font-weight:700; color:#222; }
 .pickup-detail { font-size:11px; color:#666; margin-top:3px; line-height:1.7; }
 .pickup-addr { font-size:12px; color:#1a237e; font-weight:600; margin-top:3px; }
+.pickup-time { font-size:12px; color:#2e7d32; font-weight:600; margin-top:2px; }
+.empty-pickup { color:#bbb; font-size:12px; text-align:center; padding:12px; }
+/* 날짜 네비게이션 */
+.date-nav { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; }
+.date-nav button { background:#f0f2f8; border:none; border-radius:8px; padding:6px 12px; font-size:12px; cursor:pointer; color:#444; }
+.date-nav span { font-size:13px; color:#333; font-weight:700; }
+/* 주간 테이블 */
+.week-table { width:100%; border-collapse:collapse; font-size:11px; margin-bottom:4px; }
+.week-table th { background:#f5f6ff; padding:6px 4px; text-align:center; font-weight:700; color:#555; border-bottom:1px solid #eee; }
+.week-table td { padding:6px 4px; border-bottom:1px solid #f5f5f5; vertical-align:top; text-align:center; }
+.week-table tr:last-child td { border-bottom:none; }
+.day-chip { display:inline-block; background:#e8f5e9; color:#1b5e20; border-radius:4px; padding:1px 5px; font-size:10px; margin:1px; font-weight:600; }
+.day-chip.hotel { background:#e8eaf6; color:#283593; }
+.day-chip.empty { color:#ccc; }
+/* 월간 캘린더 */
+.cal-nav { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; }
+.cal-nav button { background:#f0f2f8; border:none; border-radius:8px; padding:6px 12px; font-size:12px; cursor:pointer; }
+.cal-nav span { font-size:14px; font-weight:700; color:#333; }
+.cal-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:3px; }
+.cal-head { text-align:center; font-size:10px; font-weight:700; color:#888; padding:4px 0; }
+.cal-head.sun { color:#b71c1c; }
+.cal-head.sat { color:#1565c0; }
+.cal-day { min-height:52px; border-radius:8px; padding:3px; background:#fafafa; border:1px solid #f0f0f0; }
+.cal-day.today { border:2px solid #1a237e; background:#f0f2ff; }
+.cal-day.other-month { opacity:.35; }
+.cal-day-num { font-size:10px; font-weight:700; color:#555; margin-bottom:2px; text-align:center; }
+.cal-day-num.sun { color:#b71c1c; }
+.cal-day-num.sat { color:#1565c0; }
+.cal-chip { background:#e8f5e9; color:#1b5e20; border-radius:3px; padding:1px 3px; font-size:8px; margin:1px 0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-weight:600; }
+.cal-chip.hotel { background:#e8eaf6; color:#283593; }
+/* 모달 */
 .modal-bg { display:none; position:fixed; inset:0; background:rgba(0,0,0,.45); z-index:200; align-items:center; justify-content:center; padding:20px; }
 .modal-bg.show { display:flex; }
 .modal { background:white; border-radius:16px; padding:24px 20px; width:100%; max-width:480px; max-height:90vh; overflow-y:auto; }
@@ -118,14 +151,16 @@ tr:last-child td { border-bottom:none; }
   </div>
   <div class="tab-bar">
     <div class="tab active" onclick="goTab('today',this)">📋 오늘</div>
-    <div class="tab" onclick="goTab('pickup',this)">🚗 픽업/드랍</div>
+    <div class="tab" onclick="goTab('pickup',this)">🚗 이동</div>
+    <div class="tab" onclick="goTab('calendar',this)">📅 캘린더</div>
     <div class="tab" onclick="goTab('hotel',this)">🏨 호텔링</div>
     <div class="tab" onclick="goTab('customers',this)">🎟 횟수권</div>
-    <div class="tab" onclick="goTab('members',this)">👤 회원내역</div>
+    <div class="tab" onclick="goTab('members',this)">👤 회원</div>
     <div class="tab" onclick="goTab('addCustomer',this)">➕ 등록</div>
   </div>
   <div class="content">
 
+    <!-- 오늘 탭 -->
     <div class="section active" id="todaySection">
       <div class="stat-grid" id="statGrid"></div>
       <div class="card">
@@ -137,22 +172,109 @@ tr:last-child td { border-bottom:none; }
       </div>
     </div>
 
+    <!-- 이동(픽업/드랍) 탭 -->
     <div class="section" id="pickupSection">
-      <div class="card"><div class="card-title">🚗 오늘 픽업</div><div id="pickupList"></div></div>
-      <div class="card"><div class="card-title">📦 오늘 드랍</div><div id="dropList"></div></div>
-      <div class="card"><div class="card-title">🚶 전체 자차 등원</div><div id="selfList"></div></div>
+      <!-- 날짜 선택 -->
+      <div class="card" style="padding:12px 15px;">
+        <div class="date-nav">
+          <button onclick="changePickupDate(-1)">← 전날</button>
+          <span id="pickupDateLabel"></span>
+          <button onclick="changePickupDate(1)">다음날 →</button>
+        </div>
+      </div>
+
+      <!-- 4개 카테고리 -->
+      <div class="card">
+        <div class="pickup-category">
+          <div class="pickup-category-title">🚶 전체 자차 등원</div>
+          <div id="cat_self"></div>
+        </div>
+        <div class="pickup-category">
+          <div class="pickup-category-title">🚶📦 자차등원 + 드랍</div>
+          <div id="cat_selfDrop"></div>
+        </div>
+        <div class="pickup-category">
+          <div class="pickup-category-title">🚗🚶 픽업 + 자차드랍</div>
+          <div id="cat_pickupSelf"></div>
+        </div>
+        <div class="pickup-category">
+          <div class="pickup-category-title">🔄 픽업 + 드랍</div>
+          <div id="cat_pickupDrop"></div>
+        </div>
+      </div>
+
+      <!-- 주간 이동 현황 -->
+      <div class="card">
+        <div class="card-title">📆 이번 주 이동 현황</div>
+        <div class="table-wrap">
+          <table class="week-table">
+            <thead><tr id="weekPickupHead"></tr></thead>
+            <tbody id="weekPickupBody"></tbody>
+          </table>
+        </div>
+      </div>
     </div>
 
+    <!-- 캘린더 탭 -->
+    <div class="section" id="calendarSection">
+      <!-- 주간 예약 현황 -->
+      <div class="card">
+        <div class="card-title">
+          <span>📆 주간 예약 현황</span>
+          <div style="display:flex;gap:6px;">
+            <button class="refresh-btn" onclick="changeCalWeek(-1)">←</button>
+            <span id="weekCalLabel" style="font-size:11px;color:#666;align-self:center;"></span>
+            <button class="refresh-btn" onclick="changeCalWeek(1)">→</button>
+          </div>
+        </div>
+        <div style="overflow-x:auto;">
+          <table class="week-table">
+            <thead><tr id="weekCalHead"></tr></thead>
+            <tbody id="weekCalBody"></tbody>
+          </table>
+        </div>
+        <div style="display:flex;gap:10px;margin-top:8px;font-size:10px;color:#666;">
+          <span><span style="display:inline-block;width:10px;height:10px;background:#e8f5e9;border-radius:2px;margin-right:3px;"></span>유치원</span>
+          <span><span style="display:inline-block;width:10px;height:10px;background:#e8eaf6;border-radius:2px;margin-right:3px;"></span>호텔</span>
+        </div>
+      </div>
+
+      <!-- 월간 캘린더 -->
+      <div class="card">
+        <div class="cal-nav">
+          <button onclick="changeMonth(-1)">← 이전달</button>
+          <span id="monthLabel"></span>
+          <button onclick="changeMonth(1)">다음달 →</button>
+        </div>
+        <div class="cal-grid">
+          <div class="cal-head sun">일</div>
+          <div class="cal-head">월</div>
+          <div class="cal-head">화</div>
+          <div class="cal-head">수</div>
+          <div class="cal-head">목</div>
+          <div class="cal-head">금</div>
+          <div class="cal-head sat">토</div>
+        </div>
+        <div class="cal-grid" id="calGrid"></div>
+        <div style="display:flex;gap:10px;margin-top:8px;font-size:10px;color:#666;">
+          <span><span style="display:inline-block;width:10px;height:10px;background:#e8f5e9;border-radius:2px;margin-right:3px;"></span>유치원</span>
+          <span><span style="display:inline-block;width:10px;height:10px;background:#e8eaf6;border-radius:2px;margin-right:3px;"></span>호텔</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 호텔링 탭 -->
     <div class="section" id="hotelSection">
       <div class="card">
         <div class="card-title">🏨 호텔링 예약</div>
         <div class="table-wrap">
-          <table><thead><tr><th>강아지</th><th>입실</th><th>퇴실</th><th>이동</th><th>요청</th><th>상태</th></tr></thead>
+          <table><thead><tr><th>강아지</th><th>입실</th><th>퇴실</th><th>이동</th><th>상태</th></tr></thead>
           <tbody id="hotelTable"></tbody></table>
         </div>
       </div>
     </div>
 
+    <!-- 횟수권 탭 -->
     <div class="section" id="customersSection">
       <div class="card">
         <div class="card-title"><span>🎟 횟수권 현황</span><button class="refresh-btn" onclick="renderCustomers()">🔄</button></div>
@@ -163,6 +285,7 @@ tr:last-child td { border-bottom:none; }
       </div>
     </div>
 
+    <!-- 회원내역 탭 -->
     <div class="section" id="membersSection">
       <div class="card" style="padding:12px;">
         <div class="search-box"><span class="search-icon">🔍</span><input type="text" id="memberSearch" placeholder="강아지 이름 또는 보호자로 검색" oninput="renderMembers()"/></div>
@@ -171,6 +294,7 @@ tr:last-child td { border-bottom:none; }
       <div id="membersList"></div>
     </div>
 
+    <!-- 등록 탭 -->
     <div class="section" id="addCustomerSection">
       <div class="card">
         <div class="card-title">➕ 신규 고객 등록</div>
@@ -197,6 +321,7 @@ tr:last-child td { border-bottom:none; }
 </div>
 </div>
 
+<!-- 모달들 -->
 <div class="modal-bg" id="chargeModal">
   <div class="modal">
     <h3 id="chargeTitle">횟수권 충전</h3>
@@ -245,12 +370,37 @@ async function apiPost(body) {
   return res.json();
 }
 
-let allUsers = [], chargeTargetId='', resetPwTargetId='';
+let allUsers=[], allReservations=[], allHotels=[];
+let chargeTargetId='', resetPwTargetId='';
+let pickupDateOffset=0, calWeekOffset=0, calMonth=new Date();
 
-function fmt(d){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
-function fmtDisp(s){const d=new Date(s);return `${d.getMonth()+1}/${d.getDate()}(${['일','월','화','수','목','금','토'][d.getDay()]})`;}
-function today(){return fmt(new Date());}
+// 날짜 유틸
+function fmt(d){ return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
 
+// 서버에서 오는 날짜: "2026-06-28" (Apps Script toDisplayDate 변환값)
+// "26.06.28" 또는 "2026-06-28" → 항상 "2026-06-28"
+function normDate(s){
+  s = String(s||'');
+  if(/^\d{2}\.\d{2}\.\d{2}$/.test(s)) return '20'+s.slice(0,2)+'-'+s.slice(3,5)+'-'+s.slice(6,8);
+  return s;
+}
+
+function fmtDisp(s){
+  const d=new Date(normDate(s));
+  if(isNaN(d)) return s;
+  return `${d.getMonth()+1}/${d.getDate()}(${['일','월','화','수','목','금','토'][d.getDay()]})`;
+}
+
+function today(){ return fmt(new Date()); }
+
+function getWeekDates(offset){
+  const now=new Date(), dow=now.getDay();
+  const mon=new Date(now);
+  mon.setDate(now.getDate()-(dow===0?6:dow-1)+offset*7);
+  return Array.from({length:7},(_,i)=>{ const d=new Date(mon); d.setDate(mon.getDate()+i); return fmt(d); });
+}
+
+// 로그인
 function doLogin(){
   if(document.getElementById('adminPw').value==='admin1234'){
     document.getElementById('loginScreen').style.display='none';
@@ -266,74 +416,173 @@ function doLogout(){
   document.getElementById('adminPw').value='';
 }
 
+async function loadScheduleData(){
+  const r=await apiGet({action:'getSchedule'});
+  allReservations=(r.reservations||[]);
+  allHotels=(r.hotels||[]);
+}
+
 async function renderAll(){
-  await Promise.all([renderToday(), renderPickup(), renderHotel(), renderCustomers(), renderMembers()]);
+  await loadScheduleData();
+  renderToday();
+  renderPickupSection();
+  renderCalendar();
+  renderHotel();
+  renderCustomers();
+  renderMembers();
 }
 
-async function renderToday(){
-  try {
-    const r=await apiGet({action:'getTodayList'});
-    const list=r.list||[];
-    const pickupCnt=list.filter(r=>r.transport&&r.transport.includes('픽업')).length;
-    const hotelR=await apiGet({action:'getHotels'});
-    const td=today();
-    const hotelCnt=(hotelR.hotels||[]).filter(h=>h.checkIn<=td&&h.checkOut>=td&&h.status==='확정').length;
-    document.getElementById('statGrid').innerHTML=`
-      <div class="stat-card"><div class="stat-num">${list.length}</div><div class="stat-label">오늘 등원</div></div>
-      <div class="stat-card"><div class="stat-num">${pickupCnt}</div><div class="stat-label">픽업 필요</div></div>
-      <div class="stat-card"><div class="stat-num">${hotelCnt}</div><div class="stat-label">호텔 중</div></div>`;
-    const d=new Date();
-    document.getElementById('todayTitle').textContent=`${d.getMonth()+1}월 ${d.getDate()}일 예약 (${list.length}건)`;
-    const tbody=document.getElementById('todayTable');
-    if(!list.length){tbody.innerHTML='<tr><td colspan="5" class="empty-state">오늘 예약 없음</td></tr>';return;}
-    tbody.innerHTML=list.map(r=>`<tr>
-      <td><strong>${r.dog}</strong></td>
-      <td style="font-size:11px;color:#666">${r.breed||''}</td>
-      <td>${r.guardian}<br><span style="font-size:10px;color:#888">${r.phone}</span></td>
-      <td>${transportBadge(r.transport)}</td>
-      <td style="font-size:11px;color:#555">${r.arrivalTime||(r.addr?'📍'+r.addr:'-')}</td>
-    </tr>`).join('');
-  } catch(e){ document.getElementById('todayTable').innerHTML='<tr><td colspan="5" class="empty-state">불러오기 실패</td></tr>'; }
+// ── 오늘 탭 ──
+function renderToday(){
+  const td=today();
+  const list=allReservations.filter(r=>normDate(r.date)===td && r.status==='확정');
+  const pickupCnt=list.filter(r=>r.transport&&(r.transport.includes('픽업')||r.transport.includes('드랍'))).length;
+  const hotelCnt=allHotels.filter(h=>normDate(h.checkIn)<=td&&td<=normDate(h.checkOut)&&h.status==='확정').length;
+  document.getElementById('statGrid').innerHTML=`
+    <div class="stat-card"><div class="stat-num">${list.length}</div><div class="stat-label">오늘 등원</div></div>
+    <div class="stat-card"><div class="stat-num">${pickupCnt}</div><div class="stat-label">픽업 필요</div></div>
+    <div class="stat-card"><div class="stat-num">${hotelCnt}</div><div class="stat-label">호텔 중</div></div>`;
+  const d=new Date();
+  document.getElementById('todayTitle').textContent=`${d.getMonth()+1}월 ${d.getDate()}일 예약 (${list.length}건)`;
+  const tbody=document.getElementById('todayTable');
+  if(!list.length){tbody.innerHTML='<tr><td colspan="5" class="empty-state">오늘 예약 없음</td></tr>';return;}
+  tbody.innerHTML=list.map(r=>`<tr>
+    <td><strong>${r.dog}</strong></td>
+    <td style="font-size:11px;color:#666">${r.breed||''}</td>
+    <td>${r.guardian}<br><span style="font-size:10px;color:#888">${r.phone}</span></td>
+    <td>${transportBadge(r.transport)}</td>
+    <td style="font-size:11px;color:#555">${r.arrivalTime||(r.addr?'📍'+r.addr:'-')}</td>
+  </tr>`).join('');
 }
 
-async function renderPickup(){
-  try {
-    const r=await apiGet({action:'getTodayList'});
-    const list=r.list||[];
-    const mkItem=r=>`<div class="pickup-item">
-      <div class="pickup-name">🐶 ${r.dog} <span style="font-size:11px;color:#888">(${r.breed||''})</span></div>
-      <div class="pickup-detail">${r.guardian} · <a href="tel:${r.phone}" style="color:#d32f2f;font-weight:700;text-decoration:none">${r.phone}</a></div>
-      ${r.addr?`<div class="pickup-addr">📍 ${r.addr}</div>`:''}
-      ${r.arrivalTime?`<div class="pickup-detail">⏰ ${r.arrivalTime}</div>`:''}
+// ── 이동 탭 ──
+function changePickupDate(dir){ pickupDateOffset+=dir; renderPickupSection(); }
+
+function renderPickupSection(){
+  const d=new Date(); d.setDate(d.getDate()+pickupDateOffset);
+  const dateStr=fmt(d);
+  document.getElementById('pickupDateLabel').textContent=`${d.getMonth()+1}월 ${d.getDate()}일(${['일','월','화','수','목','금','토'][d.getDay()]})`;
+
+  const list=allReservations.filter(r=>normDate(r.date)===dateStr && r.status==='확정');
+
+  const mkItem=r=>`<div class="pickup-item">
+    <div class="pickup-name">🐶 ${r.dog} <span style="font-size:11px;color:#888">(${r.breed||''})</span></div>
+    <div class="pickup-detail">${r.guardian} · <a href="tel:${r.phone}" style="color:#d32f2f;font-weight:700;text-decoration:none">${r.phone}</a></div>
+    ${r.addr?`<div class="pickup-addr">📍 ${r.addr}</div>`:''}
+    ${r.arrivalTime?`<div class="pickup-time">⏰ ${r.arrivalTime}</div>`:''}
+  </div>`;
+  const empty='<div class="empty-pickup">없음</div>';
+
+  document.getElementById('cat_self').innerHTML=list.filter(r=>r.transport==='전체자차').map(mkItem).join('')||empty;
+  document.getElementById('cat_selfDrop').innerHTML=list.filter(r=>r.transport==='자차+드랍').map(mkItem).join('')||empty;
+  document.getElementById('cat_pickupSelf').innerHTML=list.filter(r=>r.transport==='픽업+자차').map(mkItem).join('')||empty;
+  document.getElementById('cat_pickupDrop').innerHTML=list.filter(r=>r.transport==='픽업+드랍').map(mkItem).join('')||empty;
+
+  // 주간 이동 현황
+  renderWeekPickup();
+}
+
+function renderWeekPickup(){
+  const days=['월','화','수','목','금','토','일'];
+  const week=getWeekDates(0);
+  const head=document.getElementById('weekPickupHead');
+  const body=document.getElementById('weekPickupBody');
+  const td=today();
+  head.innerHTML='<th style="font-size:10px;color:#888;padding:5px 3px;">구분</th>'+week.map((d,i)=>{
+    const dt=new Date(d), dow=dt.getDay();
+    const isT=d===td;
+    return `<th style="text-align:center;font-size:10px;${isT?'color:#1a237e;':''}${dow===0?'color:#b71c1c':dow===6?'color:#1565c0':''}">${days[i]}<br>${dt.getMonth()+1}/${dt.getDate()}</th>`;
+  }).join('');
+
+  const cats=[
+    {label:'자차', fn:r=>r.transport==='전체자차'},
+    {label:'자차+드랍', fn:r=>r.transport==='자차+드랍'},
+    {label:'픽업+자차', fn:r=>r.transport==='픽업+자차'},
+    {label:'픽업+드랍', fn:r=>r.transport==='픽업+드랍'},
+  ];
+  body.innerHTML=cats.map(cat=>`<tr>
+    <td style="font-size:10px;color:#666;white-space:nowrap">${cat.label}</td>
+    ${week.map(d=>{
+      const items=allReservations.filter(r=>normDate(r.date)===d&&r.status==='확정'&&cat.fn(r));
+      return `<td>${items.length?items.map(r=>`<div class="day-chip">${r.dog}</div>`).join(''):'<span class="day-chip empty">-</span>'}</td>`;
+    }).join('')}
+  </tr>`).join('');
+}
+
+// ── 캘린더 탭 ──
+function changeCalWeek(dir){ calWeekOffset+=dir; renderWeekCal(); }
+function changeMonth(dir){ calMonth=new Date(calMonth.getFullYear(), calMonth.getMonth()+dir, 1); renderMonthCal(); }
+
+function renderCalendar(){
+  renderWeekCal();
+  renderMonthCal();
+}
+
+function renderWeekCal(){
+  const days=['월','화','수','목','금','토','일'];
+  const week=getWeekDates(calWeekOffset);
+  const s=new Date(week[0]), e=new Date(week[6]);
+  document.getElementById('weekCalLabel').textContent=`${s.getMonth()+1}/${s.getDate()} ~ ${e.getMonth()+1}/${e.getDate()}`;
+  const td=today();
+  const head=document.getElementById('weekCalHead');
+  const body=document.getElementById('weekCalBody');
+  head.innerHTML=week.map((d,i)=>{
+    const dt=new Date(d), dow=dt.getDay();
+    const isT=d===td;
+    return `<th style="text-align:center;${isT?'color:#1a237e;background:#e8eaf6;':''}">${days[i]}<br><span style="font-size:9px;font-weight:400">${dt.getMonth()+1}/${dt.getDate()}</span></th>`;
+  }).join('');
+  body.innerHTML=`<tr>${week.map(d=>{
+    const kindy=allReservations.filter(r=>normDate(r.date)===d&&r.status==='확정');
+    const hotel=allHotels.filter(r=>normDate(r.checkIn)<=d&&d<=normDate(r.checkOut)&&r.status==='확정');
+    const all=[...kindy,...hotel.map(r=>({...r,isHotel:true}))];
+    return `<td>${all.length?all.map(r=>`<div class="day-chip${r.isHotel?' hotel':''}">${r.dog}${r.isHotel?'🏨':''}</div>`).join(''):'<div class="day-chip empty">없음</div>'}</td>`;
+  }).join('')}</tr>`;
+}
+
+function renderMonthCal(){
+  const y=calMonth.getFullYear(), m=calMonth.getMonth();
+  document.getElementById('monthLabel').textContent=`${y}년 ${m+1}월`;
+  const firstDay=new Date(y,m,1).getDay();
+  const lastDate=new Date(y,m+1,0).getDate();
+  const td=today();
+  let html='';
+  // 빈칸
+  for(let i=0;i<firstDay;i++) html+=`<div class="cal-day other-month"></div>`;
+  for(let day=1;day<=lastDate;day++){
+    const dStr=`${y}-${String(m+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+    const dow=new Date(dStr).getDay();
+    const isT=dStr===td;
+    const kindy=allReservations.filter(r=>normDate(r.date)===dStr&&r.status==='확정');
+    const hotel=allHotels.filter(r=>normDate(r.checkIn)<=dStr&&dStr<=normDate(r.checkOut)&&r.status==='확정');
+    html+=`<div class="cal-day${isT?' today':''}">
+      <div class="cal-day-num${dow===0?' sun':dow===6?' sat':''}">${day}</div>
+      ${kindy.map(r=>`<div class="cal-chip">${r.dog}</div>`).join('')}
+      ${hotel.map(r=>`<div class="cal-chip hotel">${r.dog}🏨</div>`).join('')}
     </div>`;
-    document.getElementById('pickupList').innerHTML=list.filter(r=>r.transport&&r.transport.includes('픽업')).map(mkItem).join('')||'<div class="empty-state">픽업 없음</div>';
-    document.getElementById('dropList').innerHTML=list.filter(r=>r.transport&&r.transport.includes('드랍')).map(mkItem).join('')||'<div class="empty-state">드랍 없음</div>';
-    document.getElementById('selfList').innerHTML=list.filter(r=>r.transport==='전체자차').map(mkItem).join('')||'<div class="empty-state">자차 등원 없음</div>';
-  } catch(e){}
+  }
+  document.getElementById('calGrid').innerHTML=html;
 }
 
-async function renderHotel(){
-  try {
-    const r=await apiGet({action:'getHotels'});
-    const hotels=(r.hotels||[]).sort((a,b)=>a.checkIn.localeCompare(b.checkIn));
-    const tbody=document.getElementById('hotelTable');
-    if(!hotels.length){tbody.innerHTML='<tr><td colspan="6" class="empty-state">호텔링 예약 없음</td></tr>';return;}
-    tbody.innerHTML=hotels.map(r=>`<tr>
-      <td><strong>${r.dog}</strong><br><span style="font-size:10px;color:#d32f2f">${r.phone}</span></td>
-      <td style="font-size:11px">${fmtDisp(r.checkIn)}</td>
-      <td style="font-size:11px">${fmtDisp(r.checkOut)}</td>
-      <td>${transportBadge(r.transport)}${r.addr?`<br><span style="font-size:10px">📍${r.addr}</span>`:''}</td>
-      <td style="font-size:11px;color:#666">${r.note||'-'}</td>
-      <td>${r.status==='확정'?'<span class="badge badge-ok">확정</span>':`<button class="btn-sm btn-confirm-hotel" onclick="confirmHotel('${r.id}')">확정</button>`}</td>
-    </tr>`).join('');
-  } catch(e){}
+// ── 호텔링 탭 ──
+function renderHotel(){
+  const hotels=[...allHotels].sort((a,b)=>normDate(a.checkIn).localeCompare(normDate(b.checkIn)));
+  const tbody=document.getElementById('hotelTable');
+  if(!hotels.length){tbody.innerHTML='<tr><td colspan="5" class="empty-state">호텔링 예약 없음</td></tr>';return;}
+  tbody.innerHTML=hotels.map(r=>`<tr>
+    <td><strong>${r.dog}</strong><br><span style="font-size:10px;color:#d32f2f">${r.phone}</span></td>
+    <td style="font-size:11px">${fmtDisp(r.checkIn)}</td>
+    <td style="font-size:11px">${fmtDisp(r.checkOut)}</td>
+    <td>${transportBadge(r.transport)}${r.addr?`<br><span style="font-size:10px">📍${r.addr}</span>`:''}</td>
+    <td>${r.status==='확정'?'<span class="badge badge-ok">확정</span>':`<button class="btn-sm btn-confirm-hotel" onclick="confirmHotel('${r.id}')">확정</button>`}</td>
+  </tr>`).join('');
 }
 
 async function confirmHotel(id){
   const r=await apiPost({action:'confirmHotel',id});
-  if(r.success){renderHotel();alert('✅ 확정!');}
+  if(r.success){await loadScheduleData();renderHotel();alert('✅ 확정!');}
 }
 
+// ── 횟수권 탭 ──
 async function renderCustomers(){
   try {
     const r=await apiGet({action:'getAllUsers'});
@@ -355,6 +604,7 @@ async function renderCustomers(){
   } catch(e){}
 }
 
+// ── 회원내역 탭 ──
 async function renderMembers(){
   try {
     if(!allUsers.length){const r=await apiGet({action:'getAllUsers'});allUsers=r.users||[];}
@@ -390,6 +640,7 @@ async function renderMembers(){
   } catch(e){}
 }
 
+// ── 모달 ──
 function openCharge(name){
   chargeTargetId=name;
   document.getElementById('chargeTitle').textContent=`${name} 횟수권 충전`;
@@ -415,7 +666,7 @@ async function doResetPw(){
   const newPw=document.getElementById('newPwReset').value.trim();
   if(!newPw){document.getElementById('resetPwAlert').innerHTML='<div class="alert alert-error">비밀번호를 입력해주세요.</div>';return;}
   const r=await apiPost({action:'resetPassword',dog:resetPwTargetId,newPw});
-  if(r.success){alert(`✅ 비밀번호 변경 완료!`);}
+  if(r.success){alert('✅ 비밀번호 변경 완료!');}
   closeModal('resetPwModal');allUsers=[];renderMembers();
 }
 
@@ -466,28 +717,28 @@ function goTab(name,el){
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.getElementById(name+'Section').classList.add('active');el.classList.add('active');
   if(name==='today') renderToday();
-  else if(name==='pickup') renderPickup();
+  else if(name==='pickup'){ pickupDateOffset=0; renderPickupSection(); }
+  else if(name==='calendar') renderCalendar();
   else if(name==='hotel') renderHotel();
   else if(name==='customers') renderCustomers();
   else if(name==='members') renderMembers();
 }
 
-function closeModal(id){document.getElementById(id).classList.remove('show');}
+function closeModal(id){ document.getElementById(id).classList.remove('show'); }
 
 function transportBadge(t){
   if(!t) return '-';
   if(t==='전체자차') return '<span class="badge badge-gray">전체자차</span>';
   if(t==='자차+드랍') return '<span class="badge badge-green">자차+드랍</span>';
   if(t==='픽업+자차') return '<span class="badge badge-blue">픽업+자차</span>';
-  if(t.includes('픽업')&&t.includes('드랍')) return '<span class="badge badge-blue">픽업+드랍</span>';
-  if(t.includes('픽업')) return '<span class="badge badge-blue">픽업</span>';
-  if(t.includes('드랍')) return '<span class="badge badge-green">드랍</span>';
+  if(t==='픽업+드랍') return '<span class="badge badge-blue">픽업+드랍</span>';
   return `<span class="badge badge-gray">${t}</span>`;
 }
+
 function showAlert(id,msg,type){
   const el=document.getElementById(id);
   el.innerHTML=`<div class="alert alert-${type}">${msg}</div>`;
-  setTimeout(()=>{el.innerHTML='';},3500);
+  setTimeout(()=>{ el.innerHTML=''; },3500);
 }
 </script>
 </body>
